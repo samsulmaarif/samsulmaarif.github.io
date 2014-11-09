@@ -4,7 +4,7 @@
 	
 <article>
 
-	<div class="col-sm-10">
+	<div class="col-sm-10"> <!--
 	 <span class="post-date">
 	   {% assign d = page.date | date: "%d" | plus:'0' %}
 	   {{ page.date | date: "%B" }} 
@@ -15,7 +15,7 @@
 	     {% else %}{{ d }}th,
 	   {% endcase %}
 	   {{ page.date | date: "%Y" }}
-	 </span>
+	 </span> -->
 	  <div class="article_body">
 	  {{ content }}
 	  </div>
@@ -99,7 +99,8 @@
     </div>
 
     <div class="clearfix"></div>
-
+    
+		<!--
 		<ul class="pager">
 		  {% if page.previous %}
 		  <li class="previous"><a href="{{ site.BASE_PATH }}{{ page.previous.url }}" title="{{ page.previous.title }}">&larr; Previous</a></li>
@@ -112,6 +113,7 @@
 			<li class="next disabled"><a>Next &rarr;</a>
 		  {% endif %}
 		</ul>
+		-->
 
 		<hr>
 	</div>
