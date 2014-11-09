@@ -1,16 +1,17 @@
 ---
 layout: page
-tagline:
+tagline: kata demi kata
 ---
 
-{% for post in paginator.posts %}
+<!-- {% for post in paginator.posts %} -->
 
 <article class="home">
 
   <h2>
     <a href="{{ site.BASE_PATH }}{{ post.url }}">{{ post.title }}</a>
   </h2>
-
+  
+  <!--
   <div>
     {% if post.fullview %}
     {{ post.content }}
@@ -24,10 +25,14 @@ tagline:
     {% endif %}
     {% endif %}
   </div>
-
+  -->
+  
 </article>
-{% endfor %}
-<hr/>
+<!-- {% endfor %} -->
+
+  <h2>Kalender Aktifitas</h2>
+
+{% include kalender.html %}
 
 <!-- 
 <ul class="pager"> 
