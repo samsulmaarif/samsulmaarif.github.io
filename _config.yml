@@ -1,0 +1,32 @@
+# visit https://github.com/mojombo/jekyll/wiki/Configuration for more settings
+
+#paginate: 10 # pagination based on number of posts
+#paginate_path: "page:num"
+exclude: ["README.md"] # files to exclude
+highlighter: pygments
+markdown: kramdown
+
+
+defaults:
+  -
+    scope:
+      path: "" # empty string for all files
+    values:
+      title: Samsul Ma'arif
+
+description: Stylish Jekyll Theme
+author:
+  name: Samsul Ma'arif
+  email: mail@samsul.web.id
+  github: samsulmaarif
+  twitter: samsulmaarif_
+  #pinterest: asd123
+  #linkedin: asd123
+  bio: masih belajar, untuk belajar
+  email_md5: 773a57cd165acf26974a4d4dd081bb44
+
+rss_path: feed.xml
+categories_path: categories.html
+tags_path: tags.html
+
+BASE_PATH:
