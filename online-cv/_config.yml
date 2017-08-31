@@ -1,11 +1,11 @@
 
-title: My Resume
-url: 'http://webjeda.com'
+title: Samsul Ma'arif
+url: 'http://www.samsul.web.id'
 baseurl: '/online-cv' #change it according to your repository name
 
 
 # Enable one of these styles by removing #. Style will be applied only after restarting the build or serve.
-#style: styles-2
+style: styles-2
 #style: styles-3
 #style: styles-4
 #style: styles-5
@@ -13,19 +13,19 @@ baseurl: '/online-cv' #change it according to your repository name
 
 
 #Profile information
-name: Alan Doe
-tagline: Full Stack Developer
-pic: profile.png  #place a 100x100 picture inside /assets/images/ folder and provide the name of the file below
+name: Samsul Ma'arif
+tagline: SysAdmin & DevOps Enthusiast
+pic: samsulmaarif.jpg  #place a 100x100 picture inside /assets/images/ folder and provide the name of the file below
 
 #sidebar links
-email: hello@webjeda.com
-phone: 012 345 6789
-website: blog.webjeda.com #do not add http://
-linkedin: alandoe
-github: sharu725
-twitter: '@webjeda'
+email: hay@samsul.web.id
+phone: 085747526846
+website: blog.samsul.web.id #do not add http://
+linkedin: samsulmaarif
+github: samsulmaarif
+twitter: '@samsulmaarif_'
 
 
 # Tracker
-analytics: UA-83979019-1
+#analytics: UA-83979019-1
 #Update all the sections by editing the files inside _includes folder.
