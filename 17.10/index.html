@@ -1,0 +1,532 @@
+<!--
+Learning Git for Beginner,
+Presenter : Samsul Mma'arif <mail@samsul.web.id>
+
+Template based on:
+Google IO 2012/2013 HTML5 Slide Template
+
+Authors: Eric Bidelman <ebidel@gmail.com>
+         Luke Mahé <lukem@google.com>
+
+URL: https://code.google.com/p/io-2012-slides
+-->
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Lokakarya BlankOn Linux</title>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  <!--<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">-->
+  <!--<meta name="viewport" content="width=device-width, initial-scale=1.0">-->
+  <!--This one seems to work all the time, but really small on ipad-->
+  <!--<meta name="viewport" content="initial-scale=0.4">-->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <link rel="stylesheet" media="all" href="theme/css/default.css">
+  <link rel="stylesheet" media="only screen and (max-device-width: 480px)" href="theme/css/phone.css">
+  <base target="_blank"> <!-- This amazingness opens all links in a new tab. -->
+  <script data-main="js/slides" src="js/require-1.0.8.min.js"></script>
+</head>
+<body style="opacity: 0">
+
+<slides class="layout-widescreen">
+
+  <slide class="logoslide nobackground">
+    <article class="flexbox vcenter">
+      <span><img src="images/blankon-hitam.png"></span>
+    </article>
+  </slide>
+
+  <slide class="title-slide segue nobackground">
+    <aside class="gdbar"><img src="images/logo-blankon.png"></aside>
+    <!-- The content of this hgroup is replaced programmatically through the slide_config.json. -->
+    <hgroup class="auto-fadein">
+      <h2 data-config-title><!-- populated from slide_config.json --></h2>
+      <h1 data-config-subtitle><!-- populated from slide_config.json --></h1>
+      <p data-config-presenter><!-- populated from slide_config.json --></p>
+    </hgroup>
+  </slide>
+
+
+  <slide>
+	<hgroup>
+		<h2>Saya?</h2>
+	</hgroup>
+	<article>
+	<div id="wrap">
+	    <div id="left_col">
+		<ul class="auto-fadein">
+			<li>Nama : Samsul Ma'arif</li>
+			<li>Tempat Lahir : Cilacap, Jawa Tengah</li>
+			<li>Tempat Tinggal : Turen, Kab. Malang, Jawa Timur</li>
+			<li>Pekerjaan : A.J.I., SysAdmin @ <a href="https://www.puskomedia.id">PuskoMedia Indonesia</a></li>
+			<li>Kenal Linux sejak : 2009</li>
+			<li>Pake Linux sejak : 2011</li>
+			<li>Kontributor BlankOn :<br>- Tim pemaket Bahasa Banyumas (2012.)<br>- Anggota tim Infrastruktur BlankOn (2017)</li>
+		</ul>
+	    </div
+	    <div id="right_col">
+		<div class="pull-right"><img widht="225px" src="images/BoniConstructor.png" alt="Boni Constructor" title="Boni Constructor"></div>
+	    </div>
+	</div>
+	</article>
+  
+  </slide>
+
+  <slide>
+    <hgroup>
+      <h2>Konsep Dasar</h2>
+    </hgroup>
+	<article>
+	<div id="wrap">
+	    <div id="left_col">
+		<ul class="build">
+			<li>Shell Linux</li>
+			<li>Struktur Direktori Linux</li>
+			<li>Perintah Dasar Linux</li>
+			<li>Manajemen User dan Group</li>
+			<li>Manajemen Hak Akses File dan Direktori</li>
+			<li>Manajemen Proses dan Sinyal</li>
+			<li>Manajemen Paket</li>
+			<li>Penjadwalan Otomatis</li>
+			<li>DNS Server</li>
+			<li>FTP Server</li>
+			<li>Apache Web Server</li>
+		</ul>
+	    </div
+	    <div id="auto-fadein right_col">
+		<div class="pull-right"><img width="373px" src="images/boni-terbang.png" alt="Boni Merdeka" title="Boni Merdeka"></div>
+	    </div>
+	</div>
+	</article>
+  </slide>
+
+  <slide>
+    <hgroup>
+      <h2 class="centered">Shell Linux</h2>
+    </hgroup>
+    <article class="auto-fadein">
+	<div id="wrap">
+	    <div id="left_col">
+	    <div class="build">
+	    	<p>Sebuah sesi pada Linux pada umumnya terdiri dari:</p>
+	      <ul class="build">
+		<li>Login.</li>
+		<li>Bekerja dengan shell/menjalankan aplikasi.</li>
+		<li>Logout.</li>
+	      </ul>
+	      <p>Sebuah shell pada Linux pada umumnya memiliki format :<br><br><span class="red">[nama_pengguna]@[hostname]:~$</span></p>
+	    </div>
+	    </div>
+	    <div id="right_col">
+		<div class="pull-right"><img width="300px" src="images/boni-shell.png" alt="Boni Shell" title="Boni Shell"></div>
+	    </div>
+	</div>
+    </article>
+  </slide>
+
+
+  <slide class="fill nobackground" style="background-image: url(images/sawah.jpg)">
+    <hgroup>
+      <h2 class="white">Pernah ke sini?</h2>
+    </hgroup>
+    <footer class="source white">@desa_muktisari 29/04/2014 08:58</footer>
+  </slide>
+
+  <slide>
+    <hgroup>
+      <h2 class="centered">Struktur Direktori Linux</h2>
+    </hgroup>
+    <article class="auto-fadein">
+		<p>Sebuah struktur terpadu di mana semua direktori bersatu di bawah direktori "/" file system root. Struktur direktori Linux mengikuti <span class="blue">File System Hierarchy Standard (FHS)</span> yang dipelihara oleh <span class="blue">"Free Standars Group."</span></p>
+	<div class="centered"><img width="95%"  src="http://3.bp.blogspot.com/-wKsvJIJSfKA/Vj8AP4w1oDI/AAAAAAAAADI/890q_WNLnps/s640/struktur-direktori-linux.png" alt="File System Hierarchy Standard" title="File System Hierarchy Standard"></div>
+    </article>
+  </slide>
+
+  <slide>
+    <hgroup>
+      <h2 class="centered">Struktur Direktori Linux (2)</h2>
+    </hgroup>
+    <article class="auto-fadein">
+		<p>Fungsi masing-masing direktori</p>
+	<div class="centered"><img width="80%"  src="https://1.bp.blogspot.com/-UhqNXN1aLOY/WP6zoIyKTMI/AAAAAAAAAF8/HVFR1LKBJUsilSr7UEX1Riy6CfX1ToJQwCLcB/s1600/g.PNG" alt="Struktur Direktori Linux" title="Struktur Direktori Linux"></div>
+    </article>
+  </slide>
+
+  <slide>
+    <hgroup>
+      <h2 class="centered">Struktur Direktori Linux (3)</h2>
+    </hgroup>
+    <article class="auto-fadein">
+		<p>Fungsi masing-masing direktori</p>
+	<div class="centered"><img  width="95%"  src="https://3.bp.blogspot.com/-EstT-bTtMMo/WP6z32ZjDuI/AAAAAAAAAGA/hyipTlQmXPkHmmwdlKGZVeBKWnFG_aP-gCLcB/s1600/o.PNG" alt="Struktur Direktori Linux" title="Struktur Direktori Linux"></div>
+    </article>
+  </slide>
+
+  <slide>
+    <hgroup>
+      <h2 class="centered">Struktur Direktori Linux (4)</h2>
+    </hgroup>
+    <article class="auto-fadein">
+		<p>Everything is a file</p>
+	<div class="centered"><img width="80%" src="https://1.bp.blogspot.com/-P-XUIhG1aW0/WP65xwAJdaI/AAAAAAAAAGQ/leENBJ2QSNscENgD1Ee8uFHQuFzivDcwgCLcB/s1600/lj.PNG" alt="Everything is a file" title="Everything is a file"></div>
+    </article>
+  </slide>
+
+  <slide>
+    <hgroup>
+      <h2 class="centered">Perintah Dasar Linux</h2>
+    </hgroup>
+    <article class="auto-fadein">
+	<div id="wrap">
+	    <div id="left_col">
+	    <div class="build">
+	    	<p>Sebuah sesi pada Linux pada umumnya terdiri dari:</p>
+	      <ul class="build">
+		<li>Login.</li>
+		<li>Bekerja dengan shell/menjalankan aplikasi.</li>
+		<li>Logout.</li>
+	      </ul>
+	      <p>Sebuah shell pada Linux pada umumnya memiliki format :<br><br><span class="red">[nama_pengguna]@[hostname]:~$</span></p>
+	    </div>
+	    </div>
+	    <div id="right_col">
+		<div class="pull-right"><img width="300px" src="images/boni-shell.png" alt="Boni Shell" title="Boni Shell"></div>
+	    </div>
+	</div>
+    </article>
+  </slide>
+
+  <slide>
+    <hgroup>
+      <h2 class="centered">Perintah Dasar Linux (2)</h2>
+    </hgroup>
+    <article class="auto-fadein">
+	<div id="wrap">
+	    <div id="left_col">
+
+		<p>Prompt shell di Linux ada 2, <span class="red">$</span> dan <span class="red">#</span></p>
+	      <ul class="build">
+		<li><span class="red">$</span> : adalah prompt untuk user biasa. <br><br>Contohnya <br><br><span class="red">samsul@blankon:~$</span></li>
+		<li><span class="red">#</span> : adalah prompt untuk pengguna dengan hak akses root. <br><br>Contohnya <br><br><span class="red">root@blankon:~#</span></li>
+	      </ul>
+	    </div
+	    <div id="right_col">
+		<div class="pull-right"><img width="300px" src="images/boni-laptop.png" alt="Boni Laptop" title="Boni Laptop"></div>
+	    </div>
+	</div>
+    </article>
+  </slide>
+
+  <slide>
+    <hgroup>
+      <h2 class="centered">Perintah Dasar Linux (3)</h2>
+    </hgroup>
+    <article class="auto-fadein">
+	<div id="wrap">
+	    <div id="left_col">
+	    <div class="build">
+		<p>Format perintah Linux standar mempunyai format sebagai berikut: </p>
+		<p><span class="red">$ nama_perintah [pilihan] [argumen]</span></p>
+		<p>Contoh:<br>
+		 <table style="width:100%">
+		  <tr>
+		    <td>$ ls</td>
+		    <td>tanpa argumen</td>
+		  </tr>
+		  <tr>
+		    <td>$ ls -a </td>
+		    <td>option adalah -a=all, tanpa argumen</td>
+		  </tr>
+		  <tr>
+		    <td>$ ls /bin </td>
+		    <td>tanpa option, argumen adalah /bin</td>
+		  </tr>
+		  <tr>
+		    <td>$ ls /bin /etc /usr </td>
+		    <td>ada 3 argumen</td>
+		  </tr>
+		  <tr>
+		    <td>$ ls -l /usr 	</td>
+		    <td>1 option dan 1 argumen</td>
+		  </tr>
+		  <tr>
+		    <td>$ ls -la /bin /etc </td>
+		    <td>2 option -l dan -a dan 2 argumen </td>
+		  </tr>
+		</table> </p>
+	    </div>
+	    </div>
+	    <div id="right_col">
+		<div class="pull-right"><img width="300px" src="images/boni-laptop.png" alt="Boni Laptop" title="Boni Laptop"></div>
+	    </div>
+	</div>
+    </article>
+  </slide>
+
+  <slide>
+    <hgroup>
+      <h2 class="centered">Perintah Dasar Linux (4)</h2>
+    </hgroup>
+    <article class="auto-fadein">
+		<p>Perintah praktis</p>
+	<div class="centered"><img width="80%" src="images/perintah-praktis1.png" alt="Perintah praktis" title="Perintah praktis"></div>
+    </article>
+  </slide>
+
+  <slide>
+    <hgroup>
+      <h2 class="centered">Perintah Dasar Linux (5)</h2>
+    </hgroup>
+    <article class="auto-fadein">
+		<p>Perintah praktis</p>
+	<div class="centered"><img width="80%" src="images/perintah-praktis2.png" alt="Perintah praktis" title="Perintah praktis"></div>
+    </article>
+  </slide>
+
+  <slide>
+    <hgroup>
+      <h2 class="centered">Perintah sudo dan su</h2>
+    </hgroup>
+    <article>
+      <ul class="build">
+      <li><dt>sudo</dt> merupakan perintah yang dapat digunakan untuk menjalan perintah dengan hak akses <span class="green">"root" (super user)</span> oleh pengguna biasa. Seorang administrator dapat mendelegasikan tugas administratifnya kepada pengguna lain <span class="red">tanpa</span> memberikan <span class="red">password root</span> kepada pengguna tersebut.</li>
+      <li><dt>su</dt> hampir sama dengan sudo, perbedaannya adalah saat menjalankan perintah ini password yang digunakan adalah <span class="red">password root</span>, bukan password pengguna biasa. Jadi administrator harus memberikan <span class="red">password root</span> kepada pengguna yang akan menjalankan perintah ini.</li>
+      </ul>
+      <br />
+	  <div class="pull-right"><img height="150px" src="images/boni-laptop.png" alt="Sudo and su" title="Sudo and su"></div>
+    </article>
+  </slide>
+
+  <slide>
+    <hgroup>
+      <h2 class="centered">Perintah sudo dan su (2)</h2>
+    </hgroup>
+    <article>
+      <p>Contoh penggunaannya :</p>
+      <ul class="build">
+      <li><dt>sudo</dt> 
+      <pre class="prettyprint">
+samsul@blankon:~$ sudo poweroff
+[sudo] password for samsul:     </pre>
+      </li>
+      <li><dt>su</dt> 
+      <pre class="prettyprint">
+samsul@blankon:~$ su -c poweroff
+Password:     </pre>
+      </li>
+      </ul>
+      <br />
+	  <div class="pull-right"><img height="150px" src="images/boni-laptop.png" alt="Sudo and su" title="Sudo and su"></div>
+	  <footer class="put-bottom">* Secara default Ubuntu tidak mengaktifkan <span class="red">password root</span>.<br>* Password di Linux tidak terlihat, ketikkan saja passwordnya <br>&nbsp;&nbsp;&nbsp;lalu tekan <span class="blue">ENTER</span>.</footer>
+    </article>
+  </slide>
+
+  <slide class="segue dark nobackground">
+    <aside class="gdbar"><img src="images/logo-blankon.png"></aside>
+    <hgroup class="auto-fadein">
+      <h3>"Saya percaya kita bukan bangsa bodoh,"</h3>
+      <h2>Onno W. Purbo</h2>
+    </hgroup>
+	  <div class="pull-right"><img src="images/onnowpurbo.jpg" alt="Onno W. Purbo" title="Onno W. Purbo"></div>
+
+  </slide>
+
+  <slide>
+    <hgroup>
+      <h2 class="centered">Manajemen User dan Group</h2>
+    </hgroup>
+    <article class="auto-fadein">
+      <p>Kelompok User dan Groups</p>
+      <ul class="build">
+      <li><dt>User Admin/Super User</dt>Yang dimaksud dengan super user adalah user yang bertanggung jawab penuh terhadap sistem dengan tugas yang tidak terbatas. Beberapa tugas super user diataranya adalah mengkonfigurasi sistem, melakukan update sistem, melakukan manajemen user dan group, dan sampai menghapus sistem secara keseluruhan..</li>
+      <li><dt>User Sistem</dt>User sistem adalah kelompok user yang menjalankan aplikasi daemon user sistem tersebut. User sistem memiliki UID dan GID di atas 0 dan di bawah 500. contoh user sistem beberapa diataranya adalah mail, news, lp, sshd, apache, dan lain sebagainya.</li>
+      </ul>
+	  <div class="pull-right"><img height="150px" src="images/boni-laptop.png" alt="Sudo and su" title="Sudo and su"></div>
+    </article>
+  </slide>
+
+  <slide>
+    <hgroup>
+      <h2 class="centered">Manajemen User dan Group (2)</h2>
+    </hgroup>
+    <article class="auto-fadein">
+      <p>Kelompok User dan Groups</p>
+      <ul class="build">
+      <li><dt>User/pengguna biasa</dt> Yang dimaksud dengan user/pengguna biasa adalah user yang dibuat oleh user root dengan UID dan GID diatas 500. User pengguna memiliki wewenang hanya pada home direktori user tersebut sehingga apabila salah satu pengguna mengalami error tidak mempengaruhi user yang lain.</li>
+      </ul>
+	  <div class="pull-right"><img height="200px" src="images/boni-laptop.png" alt="Sudo and su" title="Sudo and su"></div>
+    </article>
+  </slide>
+
+  <slide>
+    <hgroup>
+      <h2 class="centered">Manajemen User dan Group (3)</h2>
+    </hgroup>
+    <article class="auto-fadein">
+      <p>Membuat User</p>
+      <ul class="build">
+      <li>Untuk membuat user dan group hanya dapat dilakukan oleh <span class="red">super user “root”</span>. Perintah untuk membuat user baru adalah <span class="green">adduser[spasi]nama_user</span> sedangkan untuk mengisi password user yang dibuat <span class="red">passwd[spasi]nama_user</span>.<br><br>
+      <pre class="prettyprint">
+root@blankon:~# adduser haryani</pre>
+      </li>
+      </ul>
+	  <div class="pull-right"><img height="200px" src="images/boni-laptop.png" alt="Sudo and su" title="Sudo and su"></div>
+    </article>
+  </slide>
+
+  <slide>
+    <hgroup>
+      <h2 class="centered">Manajemen User dan Group (4)</h2>
+    </hgroup>
+    <article>
+      <p>Menghapus User</p>
+      <ul class="build">
+      <li>Untuk menghapus user jalankan perintah berikut ini: <br><br>
+      <pre class="prettyprint">
+root@blankon:~# userdel haryani     </pre></li>
+      <li>atau<br><br>
+      <pre class="prettyprint">
+root@blankon:~# userdel -r haryani     </pre>
+      </li>
+      </ul>
+	  <div class="pull-right"><img height="200px" src="images/boni-laptop.png" alt="Sudo and su" title="Sudo and su"></div>
+	  <footer class="put-bottom">Catatan: menghapus dengan menggunakan opsi -r, akan menghapus <br>secara keseluruhan home direktori user tersebut.</footer>
+    </article>
+  </slide>
+
+  <slide>
+    <hgroup>
+      <h2 class="centered">Manajemen User dan Group (5)</h2>
+    </hgroup>
+    <article>
+      <p>Membuat Group</p>
+      <ul class="build">
+      <li>Membuat group dengan nama manager <br><br>
+      <pre class="prettyprint">
+root@blankon:~# groupadd manager</pre></li>
+      <li>Menentukan Administrator dan member group manager<br><br>
+      <pre class="prettyprint">
+root@blankon:~# gpasswd -A haryani -M samsul,ubuntu manager</pre>
+      </li>
+      </ul>
+	  <div class="pull-right"><img height="200px" src="images/boni-laptop.png" alt="Sudo and su" title="Sudo and su"></div>
+	  <footer class="put-bottom">Catatan: opsi -A adalah user administrator adalah “haryani”, dan <br>opsi -M adalah user member, yaitu “samsul”, dan “ubuntu”</footer>
+    </article>
+  </slide>
+
+
+  <slide class="segue dark quote nobackground">
+    <aside class="gdbar right bottom"><img src="images/logo-blankon.png"></aside>
+    <article class="flexbox vleft auto-fadein">
+      <q>
+        Talk is cheap, show me the code.
+      </q>
+      <div class="author">
+        - Linus Torvalds -<br>
+        Linux Creator
+      </div>
+    </article>
+  </slide>
+
+  <slide>
+    <hgroup>
+      <h2 class="centered">Manajemen User dan Group (6)</h2>
+    </hgroup>
+    <article>
+      <p>Membuat Group</p>
+      <ul class="build">
+      <li>Memberikan password group manager <br><br>
+      <pre class="prettyprint">
+root@blankon:~# gpasswd manager</pre></li>
+      <li>Menambah dan menghapus member dari group manager<br><br>
+      <pre class="prettyprint">
+root@blankon:~# gpasswd -a maarif
+Adding user maarif to group manager
+root@blankon:~# gpasswd -d maarif
+Removing user maarif from group manager</pre>
+      </li>
+      </ul>
+	  <footer class="put-bottom">Catatan: opsi -a menambah user baru, dan <br>opsi -d menghapus user.</footer>
+    </article>
+  </slide>
+
+  <slide>
+    <hgroup>
+      <h2 class="centered">Manajemen User dan Group (7)</h2>
+    </hgroup>
+    <article>
+      <p>Membuat Group</p>
+      <ul class="build">
+      <li>Login pada group manager dengan perintah<br><br>
+      <pre class="prettyprint">
+root@blankon:~# su - haryani
+haryani@blankon:~$ newgrp manager
+Password:</pre></li>
+      <li>Karena user “haryani” merupakan admin group maka diminta konfirmasi password group sedangkan untuk user member yaitu “samsul”, dan “ubuntu” tidak diminta konfirmasi password group.</li>
+      <li>Untuk mengetahui daftar group tertentu jalankan perintah berikut<br><br>
+      <pre class="prettyprint">
+haryani@blankon:~$ groups
+manager haryani</pre>
+      </li>
+      </ul>
+    </article>
+  </slide>
+
+  <slide>
+    <hgroup>
+      <h2 class="centered">Manajemen User dan Group (8)</h2>
+    </hgroup>
+    <article>
+      <p>Menghapus Group</p>
+      <ul class="build">
+      <li>Perintah untuk menghapus group adalah <span class="red">groupdel[spasi]nama_group</span> <br><br>
+      <pre class="prettyprint">
+root@blankon:~# groupdel manager
+      </pre></li>
+      </ul>
+	  <div class="pull-right"><img height="200px" src="images/boni-terbang.png" alt="Sudo and su" title="Sudo and su"></div>
+    </article>
+  </slide>
+
+
+  <slide class="thank-you-slide segue nobackground">
+    <aside class="gdbar right"><img src="images/logo-blankon.png"></aside>
+    <article class="flexbox vleft auto-fadein">
+      <h2>&lt;Thank You!&gt;</h2>
+      <p>Pertanyaan?</p>
+    </article>
+    <p class="auto-fadein" data-config-contact>
+      <!-- populated from slide_config.json -->
+    </p>
+  </slide>
+
+  <slide class="logoslide dark nobackground">
+    <article class="flexbox vcenter">
+      <span><img src="images/blankon-putih.png"></span>
+    </article>
+  </slide>
+
+  <slide class="backdrop"></slide>
+
+</slides>
+
+<script>
+/*
+var _gaq = _gaq || [];
+_gaq.push(['_setAccount', 'UA-XXXXXXXX-1']);
+_gaq.push(['_trackPageview']);
+
+(function() {
+  var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+  ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+  var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+})();
+*/
+</script>
+
+<!--[if IE]>
+  <script src="http://ajax.googleapis.com/ajax/libs/chrome-frame/1/CFInstall.min.js"></script>
+  <script>CFInstall.check({mode: 'overlay'});</script>
+<![endif]-->
+</body>
+</html>
