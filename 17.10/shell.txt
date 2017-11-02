@@ -1,15 +1,112 @@
 JENIS-JENIS SHELL YANG ADA DI UNIX /LINUX :
-Bourne Shell (sh) diciptakan oleh Steven Bourne, merupakan shell UNIX yang pertama dan tercepat pada semua system UNIX Bourne Shell memiliki bahasa pemrograman shell yang baik tetapi kurang nyaman dalam hal interaktivitas
-C Shell (csh) diciptakan oleh Bill Joy, Bahasa pemrograman shell ini lebih sulit untuk digunakan oleh pemula karena memiliki sintaks mirip bahasa C dan oleh karena itulah shell ini dinamakan C shell. Kelebihannya Shell ini memiliki kemampuan interaktivitas yang lebih baik dibandingkan Bourne shell, serta memiliki fasilitas command completation untuk dapat melengkapi perintah yang belum lengkap dapat dilakukan dengan menekan tombol Tab.
-Korn Shell (ksh) diciptakan oleh Dave Korn. Shell ini diciptakan dengan menggabungkan kelebihan Bourne shell dan C shell sehingga shell ini memiliki interaktivitas yang baik dan juga gaya pemrograman shell yang mudah.
-Bourne Again Shell (bash), shell ini dikembangkan oleh Steven Bourne (pencipta sh) dimana shell ini adalah pengembangan Bourne shell (sh) yang sudah dilengkapi dengan berbagai kelebihan yang tidak terdapat pada versi sebelumnya. Pada shell ini juga dilengkapi dengan kelebihan-kelebihan yang terdapat pada C shell dan juga Korn shell. Bash juga memiliki bahasa pemrograman yang baik serta interaktivitas yang mudah di pahami. Bash adalah jenis shell yang paling banyak digunakan pada saat ini.
-Almquist shell (ash), shell ini dikembangkan Kenneth Almquist. Shell ini kecil, cepat dan kompatibel dengan standard Posix. Ash banyak digunakan dalam embedded linux, embedded adalah sistem tertanam misalnya BIOS komputer
+- Bourne Shell (sh) diciptakan oleh Steven Bourne, merupakan shell UNIX yang pertama dan tercepat pada semua system UNIX Bourne Shell memiliki bahasa pemrograman shell yang baik tetapi kurang nyaman dalam hal interaktivitas
+- C Shell (csh) diciptakan oleh Bill Joy, Bahasa pemrograman shell ini lebih sulit untuk digunakan oleh pemula karena memiliki sintaks mirip bahasa C dan oleh karena itulah shell ini dinamakan C shell. Kelebihannya Shell ini memiliki kemampuan interaktivitas yang lebih baik dibandingkan Bourne shell, serta memiliki fasilitas command completation untuk dapat melengkapi perintah yang belum lengkap dapat dilakukan dengan menekan tombol Tab.
+- Korn Shell (ksh) diciptakan oleh Dave Korn. Shell ini diciptakan dengan menggabungkan kelebihan Bourne shell dan C shell sehingga shell ini memiliki interaktivitas yang baik dan juga gaya pemrograman shell yang mudah.
+- Bourne Again Shell (bash), shell ini dikembangkan oleh Steven Bourne (pencipta sh) dimana shell ini adalah pengembangan Bourne shell (sh) yang sudah dilengkapi dengan berbagai kelebihan yang tidak terdapat pada versi sebelumnya. Pada shell ini juga dilengkapi dengan kelebihan-kelebihan yang terdapat pada C shell dan juga Korn shell. Bash juga memiliki bahasa pemrograman yang baik serta interaktivitas yang mudah di pahami. Bash adalah jenis shell yang paling banyak digunakan pada saat ini.
+- Almquist shell (ash), shell ini dikembangkan Kenneth Almquist. Shell ini kecil, cepat dan kompatibel dengan standard Posix. Ash banyak digunakan dalam embedded linux, embedded adalah sistem tertanam misalnya BIOS komputer
+- BusyBox, shell ini memiliki ukuran yang kecil dan banyak ditemukan dalam sistem linux embedded, installer, distribusi floppy atau kondisi yang membutuhkan kesederhanaan dan ukuran yang sangat kecil. shell ini juga menyediakan fungsionalitas banyak utiliti sistem dalam satu binary yang di link ke binari busybox.
+- Debian Almquist shell (dash), merupakan turunan ash, yang diturunkan ke linux dari ash versi Net-BSD, oleh Herbert Xu pada tahun 1997, shell ini merupakan pengganti versi modern dari shell ash pada distro Debian.
+- Exensible shell (es). shell yang diturunkan dari shell rc pada Plan 9 (distributed sistem operasi yang dikembangkan oleh Bell Labs). Di Linux, es tergolong shell yang sangat langka, dan jarang digunakan
+- Friendly interactive shell (fish), merupakan shell yang cukup popular di Linux dan tergolong aktif dikembangkan. Fokus utama fish adalah kemudahan penggunaan. Fish tergolong sangat lengkap, kaya fitur dan cukup menarik.
+- Stand Alone Shell (sash), adalah shell unix yang menyediakan berbagai fungsionaitas utility sistem, dilink secara statik. Dengan fitur tersebut, sash umum ditemukan pada sistem minim resource, installer, atau pada rescue system.
+- Z shell (zsh), adalah salah satu shell populer di Linux, banyak pengguna linux memanfaatkan kemampuan scripting-nya untuk membangun script yang kompleks.
+- Hart to Use shell (hush), ide dari shell ini adalah tugas yang sangat sederhana dibuat sangat rumit dan diselesaikan dengan perintah yang panjang.
+- Karel’s Interactive Simple shell/Karel’s Incredibly Stupid shell (kiss), shell dengan fungsionalitas berbagai utiliti penting sistem yaitu: rkiss dukungan readline, gkiss dukungan getline, bkiss tanpa fitur editing.
 
-BusyBox, shell ini memiliki ukuran yang kecil dan banyak ditemukan dalam sistem linux embedded, installer, distribusi floppy atau kondisi yang membutuhkan kesederhanaan dan ukuran yang sangat kecil. shell ini juga menyediakan fungsionalitas banyak utiliti sistem dalam satu binary yang di link ke binari busybox.
-Debian Almquist shell (dash), merupakan turunan ash, yang diturunkan ke linux dari ash versi Net-BSD, oleh Herbert Xu pada tahun 1997, shell ini merupakan pengganti versi modern dari shell ash pada distro Debian.
-Exensible shell (es). shell yang diturunkan dari shell rc pada Plan 9 (distributed sistem operasi yang dikembangkan oleh Bell Labs). Di Linux, es tergolong shell yang sangat langka, dan jarang digunakan
-Friendly interactive shell (fish), merupakan shell yang cukup popular di Linux dan tergolong aktif dikembangkan. Fokus utama fish adalah kemudahan penggunaan. Fish tergolong sangat lengkap, kaya fitur dan cukup menarik.
-Stand Alone Shell (sash), adalah shell unix yang menyediakan berbagai fungsionaitas utility sistem, dilink secara statik. Dengan fitur tersebut, sash umum ditemukan pada sistem minim resource, installer, atau pada rescue system.
-Z shell (zsh), adalah salah satu shell populer di Linux, banyak pengguna linux memanfaatkan kemampuan scripting-nya untuk membangun script yang kompleks.
-Hart to Use shell (hush), ide dari shell ini adalah tugas yang sangat sederhana dibuat sangat rumit dan diselesaikan dengan perintah yang panjang.
-Karel’s Interactive Simple shell/Karel’s Incredibly Stupid shell (kiss), shell dengan fungsionalitas berbagai utiliti penting sistem yaitu: rkiss dukungan readline, gkiss dukungan getline, bkiss tanpa fitur editing.
+-------
+
+List of Linux Shell.
+
+ 
+
+NOTE:  Linux shell have their own characteristic, features, capabilities and limitation, below is list of Linux shell available (on Fedora Core) and their description.  Also note that some shell listed below have the same description, this is because they are not actual shell itself, but symbolic links to other shell.
+
+ 
+
+ 
+
+Name:/bin/sh
+
+DESCRIPTION:  Bash  is  an  sh-compatible  command language interpreter that executes commands read from the standard input or from a file.  Bash also incorporates useful features from the Korn and C shells (ksh and csh).
+
+Bash  is  intended  to be a conformant implementation of the IEEE POSIX
+
+Shell and Tools specification (IEEE Working Group 1003.2).
+
+ 
+
+Name:/bin/bash
+
+DESCRIPTION:  Bash  is  an  sh-compatible  command language interpreter that executes commands read from the standard input or from a file.  Bash also incorporates useful features from the Korn and C shells (ksh and csh).
+
+ Bash  is  intended  to be a conformant implementation of the IEEE POSIX Shell and Tools specification (IEEE Working Group 1003.2).
+
+ 
+
+Name:/sbin/nologin
+
+DESCRIPTION:  nologin displays a message that an account is not available and exits nonzero.  It is intended as a replacement shell field for accounts that have been disabled.
+
+If the file /etc/nologin.txt exists, nologin displays its contents to the user instead of the default message.
+
+ 
+
+Name:/bin/ash
+
+DESCRIPTION:  Sh is the standard command interpreter for the system. The current ver-sion of sh is in the process of being changed to conform with the POSIX 1003.2 and 1003.2a specifications for the shell.  This version has many features which make it appear similar in some respects to the Korn shell, but it is not a Korn shell clone (see ksh(1)).  Only features designated by POSIX, plus a few Berkeley extensions, are being incorporated into this shell.  We expect POSIX conformance by the time 4.4 BSD is released.
+
+This man page is not intended to be a tutorial or a complete specifica-
+
+tion of the shell.
+
+ 
+
+Name:/bin/bsh
+
+DESCRIPTION:  Sh is the standard command interpreter for the system. The current ver-sion of sh is in the process of being changed to conform with the POSIX 1003.2 and 1003.2a specifications for the shell.  This version has many features which make it appear similar in some respects to the Korn shell, but it is not a Korn shell clone (see ksh(1)).  Only features designated by POSIX, plus a few Berkeley extensions, are being incorporated into this shell.  We expect POSIX conformance by the time 4.4 BSD is released.
+
+This man page is not intended to be a tutorial or a complete specifica-
+
+tion of the shell.
+
+ 
+
+Name:/bin/ksh
+
+DESCRIPTION:  ksh is a command interpreter that is intended for both interactive  and shell  script  use.   Its  command  language is a superset of the sh(1) shell language.
+
+ 
+
+Name:/usr/bin/ksh
+
+DESCRIPTION:  ksh is a command interpreter that is intended for both interactive  and shell  script  use.   Its  command  language is a superset of the sh(1) shell language.
+
+ 
+
+Name:/usr/bin/pdksh
+
+DESCRIPTION:  ksh is a command interpreter that is intended for both interactive  and shell  script  use.   Its  command  language is a superset of the sh(1) shell language.
+
+ 
+
+Name:/bin/tcsh
+
+DESCRIPTION:  tcsh  is  an enhanced but completely compatible version of the Berkeley UNIX C shell, csh(1).  It is a command language interpreter usable both as an interactive login shell and a shell script command processor.  It includes a command-line editor  (see  The  command-line  editor),  pro- grammable  word  completion (see Completion and listing), spelling cor- rection (see Spelling correction), a  history  mechanism  (see  History substitution),  job  control  (see  Jobs) and a C-like syntax.  The NEW FEATURES section describes major  enhancements  of  tcsh  over  csh(1).
+
+Throughout  this  manual,  features  of  tcsh  not found in most csh(1) implementations (specifically, the 4.4BSD csh) are labeled with  â(+)â, and features which are present in csh(1) but not usually documented are labeled with â(u)â.
+
+ 
+
+Name:/bin/csh
+
+DESCRIPTION:  tcsh  is  an enhanced but completely compatible version of the Berkeley UNIX C shell, csh(1).  It is a command language interpreter usable both as an interactive login shell and a shell script command processor.  It includes a command-line editor  (see  The  command-line  editor),  pro- grammable  word  completion (see Completion and listing), spelling cor- rection (see Spelling correction), a  history  mechanism  (see  History substitution),  job  control  (see  Jobs) and a C-like syntax.  The NEW FEATURES section describes major  enhancements  of  tcsh  over  csh(1).
+
+Throughout  this  manual,  features  of  tcsh  not found in most csh(1) implementations (specifically, the 4.4BSD csh) are labeled with  â(+)â, and features which are present in csh(1) but not usually documented are labeled with â(u)â.
+
+ 
+
+Name:/bin/zsh
+
+DESCRIPTION:  Zsh is a UNIX command interpreter  (shell)  usable  as  an  interactive login  shell  and as a shell script command processor.  Of the standard shells, zsh most closely resembles ksh but includes many  enhancements.  Zsh has command line editing, builtin spelling correction, programmable command completion, shell functions (with autoloading), a history mechanism, and a host of other features. 
+
+Source : http://www.labtestproject.com/list_of_linux_shell
