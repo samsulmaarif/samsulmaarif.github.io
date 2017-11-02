@@ -4,7 +4,7 @@ var SLIDE_CONFIG = {
     title: 'Kembali ke Dasar:',
     subtitle: 'Perintah Dasar Linux',
     eventInfo: {
-      title: 'Malang',
+      title: 'DILO Malang',
       date: '3 November 2017'
     },
     useBuilds: true, // Default: true. False will turn off slide animation builds.
@@ -23,7 +23,7 @@ var SLIDE_CONFIG = {
   // Author information
   presenters: [{
     name: 'Samsul Ma\'arif',
-    company: 'Tim Infrastruktur BlankOn Linux',
+    company: 'BlankOn Malang',
     //gplus: 'http://plus.google.com/1234567890',
     twitter: '@samsulmaarif_',
     www: 'http://www.samsul.web.id',

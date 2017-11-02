@@ -1,5 +1,5 @@
 <!--
-Learning Git for Beginner,
+Perintah Dasar Linux,
 Presenter : Samsul Mma'arif <mail@samsul.web.id>
 
 Template based on:
@@ -13,7 +13,7 @@ URL: https://code.google.com/p/io-2012-slides
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Lokakarya BlankOn Linux</title>
+  <title>Release Party Ubuntu 17.10</title>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="chrome=1">
   <!--<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">-->
@@ -54,14 +54,14 @@ URL: https://code.google.com/p/io-2012-slides
 	<article>
 	<div id="wrap">
 	    <div id="left_col">
-		<ul class="auto-fadein">
-			<li>Nama : Samsul Ma'arif</li>
+		<ul class="build">
+			<li>Nama : <strong>Samsul Ma'arif</strong></li>
 			<li>Tempat Lahir : Cilacap, Jawa Tengah</li>
 			<li>Tempat Tinggal : Turen, Kab. Malang, Jawa Timur</li>
-			<li>Pekerjaan : A.J.I., SysAdmin @ <a href="https://www.puskomedia.id">PuskoMedia Indonesia</a></li>
+			<li>Pekerjaan : <br>- A.J.I., <br>- SysAdmin @ <a target="_blank" href="https://www.puskomedia.id">PuskoMedia Indonesia</a></li>
 			<li>Kenal Linux sejak : 2009</li>
 			<li>Pake Linux sejak : 2011</li>
-			<li>Kontributor BlankOn :<br>- Tim pemaket Bahasa Banyumas (2012.)<br>- Anggota tim Infrastruktur BlankOn (2017)</li>
+			<li>Kontributor BlankOn :<br>- Tim pemaket Bahasa Banyumas (2012)<br>- Anggota tim Infrastruktur BlankOn (2017)</li>
 		</ul>
 	    </div
 	    <div id="right_col">
@@ -74,23 +74,17 @@ URL: https://code.google.com/p/io-2012-slides
 
   <slide>
     <hgroup>
-      <h2>Konsep Dasar</h2>
+      <h2>Topik</h2>
     </hgroup>
 	<article>
 	<div id="wrap">
 	    <div id="left_col">
 		<ul class="build">
-			<li>Shell Linux</li>
-			<li>Struktur Direktori Linux</li>
+			<li>Shell di Linux</li>
+			<li>Berkenalan dengan BASH</li>
 			<li>Perintah Dasar Linux</li>
-			<li>Manajemen User dan Group</li>
-			<li>Manajemen Hak Akses File dan Direktori</li>
-			<li>Manajemen Proses dan Sinyal</li>
-			<li>Manajemen Paket</li>
-			<li>Penjadwalan Otomatis</li>
-			<li>DNS Server</li>
-			<li>FTP Server</li>
-			<li>Apache Web Server</li>
+			<li>GNU Coreutils</li>
+			<li>Tips Keren Bash</li>
 		</ul>
 	    </div
 	    <div id="auto-fadein right_col">
@@ -102,23 +96,52 @@ URL: https://code.google.com/p/io-2012-slides
 
   <slide>
     <hgroup>
-      <h2 class="centered">Shell Linux</h2>
+      <h2 class="centered">Shell di Linux</h2>
     </hgroup>
     <article class="auto-fadein">
 	<div id="wrap">
 	    <div id="left_col">
 	    <div class="build">
-	    	<p>Sebuah sesi pada Linux pada umumnya terdiri dari:</p>
-	      <ul class="build">
-		<li>Login.</li>
-		<li>Bekerja dengan shell/menjalankan aplikasi.</li>
-		<li>Logout.</li>
-	      </ul>
-	      <p>Sebuah shell pada Linux pada umumnya memiliki format :<br><br><span class="red">[nama_pengguna]@[hostname]:~$</span></p>
+	    	<p>Apa itu shell?</p>
+	        <p>Shell adalah program yang digunakan untuk menghubungkan user dengan kernel sistem operasi, dalam hal ini Linux kernel. Setiap kali perintah yang dimasukkan oleh user akan diterjemahkan oleh shell kemudian hasilnya akan dikirimkan ke kernel dan kernel inilah yang akan melakukan operasi yang diminta oleh user tersebut.</p>
 	    </div>
 	    </div>
 	    <div id="right_col">
 		<div class="pull-right"><img width="300px" src="images/boni-shell.png" alt="Boni Shell" title="Boni Shell"></div>
+	    </div>
+	</div>
+    </article>
+  </slide>
+
+
+  <slide>
+    <hgroup>
+      <h2 class="centered">Shell di Linux (2)</h2>
+    </hgroup>
+    <article class="auto-fadein">
+	<div id="wrap">
+	    <div id="left_col">
+	    <div class="build">
+	    	<p>Macam-macam shell di Linux antara lain:</p>
+	      <ul class="build">
+		<li>Bourne Shell (sh).</li>
+		<li>C Shell (csh).</li>
+		<li>Korn Shell (ksh).</li>
+		<li>Bourne Again Shell (bash).</li>
+		<li>Almquist shell (ash).</li>
+		<li>BusyBox.</li>
+		<li>Debian Almquist shell (dash).</li>
+		<li>Exensible shell (es).</li>
+		<li>Friendly interactive shell (fish).</li>
+		<li>Stand Alone Shell (sash).</li>
+		<li>Z shell (zsh).</li>
+		<li>Hart to Use shell (hush).</li>
+		<li>Karel’s Interactive Simple shell/Karel’s Incredibly Stupid shell (kiss).</li>
+	      </ul>
+	    </div>
+	    </div>
+	    <div id="right_col">
+		<div class="pull-right"><img width="300px" src="images/boni-laptop.png" alt="Boni Shell" title="Boni Shell"></div>
 	    </div>
 	</div>
     </article>
@@ -134,41 +157,30 @@ URL: https://code.google.com/p/io-2012-slides
 
   <slide>
     <hgroup>
-      <h2 class="centered">Struktur Direktori Linux</h2>
+      <h2 class="centered">Berkenalan dengan BASH</h2>
     </hgroup>
     <article class="auto-fadein">
-		<p>Sebuah struktur terpadu di mana semua direktori bersatu di bawah direktori "/" file system root. Struktur direktori Linux mengikuti <span class="blue">File System Hierarchy Standard (FHS)</span> yang dipelihara oleh <span class="blue">"Free Standars Group."</span></p>
-	<div class="centered"><img width="95%"  src="http://3.bp.blogspot.com/-wKsvJIJSfKA/Vj8AP4w1oDI/AAAAAAAAADI/890q_WNLnps/s640/struktur-direktori-linux.png" alt="File System Hierarchy Standard" title="File System Hierarchy Standard"></div>
-    </article>
-  </slide>
-
-  <slide>
-    <hgroup>
-      <h2 class="centered">Struktur Direktori Linux (2)</h2>
-    </hgroup>
-    <article class="auto-fadein">
-		<p>Fungsi masing-masing direktori</p>
-	<div class="centered"><img width="80%"  src="https://1.bp.blogspot.com/-UhqNXN1aLOY/WP6zoIyKTMI/AAAAAAAAAF8/HVFR1LKBJUsilSr7UEX1Riy6CfX1ToJQwCLcB/s1600/g.PNG" alt="Struktur Direktori Linux" title="Struktur Direktori Linux"></div>
-    </article>
-  </slide>
-
-  <slide>
-    <hgroup>
-      <h2 class="centered">Struktur Direktori Linux (3)</h2>
-    </hgroup>
-    <article class="auto-fadein">
-		<p>Fungsi masing-masing direktori</p>
-	<div class="centered"><img  width="95%"  src="https://3.bp.blogspot.com/-EstT-bTtMMo/WP6z32ZjDuI/AAAAAAAAAGA/hyipTlQmXPkHmmwdlKGZVeBKWnFG_aP-gCLcB/s1600/o.PNG" alt="Struktur Direktori Linux" title="Struktur Direktori Linux"></div>
-    </article>
-  </slide>
-
-  <slide>
-    <hgroup>
-      <h2 class="centered">Struktur Direktori Linux (4)</h2>
-    </hgroup>
-    <article class="auto-fadein">
-		<p>Everything is a file</p>
-	<div class="centered"><img width="80%" src="https://1.bp.blogspot.com/-P-XUIhG1aW0/WP65xwAJdaI/AAAAAAAAAGQ/leENBJ2QSNscENgD1Ee8uFHQuFzivDcwgCLcB/s1600/lj.PNG" alt="Everything is a file" title="Everything is a file"></div>
+	<div id="wrap">
+	    <div id="left_col">
+	    <div class="build">
+	    	<p>Bash Shell = Command Prompt?</p>
+		<p>Fitur-fitur Bash:</p>
+	      <ul class="build">
+		<li>Auto complete</li>
+		<li>Command history</li>
+		<li>Alias</li>
+		<li>Job Control</li>
+		<li>Mendukung Regex</li>
+		<li>Mendukung Scripting</li>
+		<li>dll.</li>
+	      </ul>
+	        <p><br><br><span class="red"></span></p>
+	    </div>
+	    </div>
+	    <div id="right_col">
+		<div class="pull-right"><img width="300px" src="images/boni-humas.png" alt="Boni Shell" title="Boni Shell"></div>
+	    </div>
+	</div>
     </article>
   </slide>
 
@@ -180,13 +192,8 @@ URL: https://code.google.com/p/io-2012-slides
 	<div id="wrap">
 	    <div id="left_col">
 	    <div class="build">
-	    	<p>Sebuah sesi pada Linux pada umumnya terdiri dari:</p>
-	      <ul class="build">
-		<li>Login.</li>
-		<li>Bekerja dengan shell/menjalankan aplikasi.</li>
-		<li>Logout.</li>
-	      </ul>
-	      <p>Sebuah shell pada Linux pada umumnya memiliki format :<br><br><span class="red">[nama_pengguna]@[hostname]:~$</span></p>
+	      <p>Sebuah shell pada Linux pada umumnya memiliki format :</p>
+	      <p><span class="red">[nama_pengguna]@[hostname]:~$</span></p>
 	    </div>
 	    </div>
 	    <div id="right_col">
@@ -285,6 +292,43 @@ URL: https://code.google.com/p/io-2012-slides
 
   <slide>
     <hgroup>
+      <h2 class="centered">Perintah Dasar Linux (6)</h2>
+    </hgroup>
+    <article class="auto-fadein">
+		<p>Perintah praktis</p>
+	<div class="centered"><img width="60%" src="images/bincat.jpg" alt="Perintah praktis" title="Perintah praktis"></div>
+    </article>
+  </slide>
+
+  <slide>
+    <hgroup>
+      <h2 class="centered">Perintah Dasar Linux (7)</h2>
+    </hgroup>
+    <article class="auto-fadein">
+    <div id="wrap">
+    	<div id="left_col">
+		<p>Baca manual/panduan/dokumentasi perintah!!!</p>
+      <pre class="prettyprint">
+samsul@blankon:~$ man nama_perintah
+      </pre>
+		<p>dengan opsi <span class="red">--help</span> atau <span class="red">-h</span></p>
+      <pre class="prettyprint">
+samsul@blankon:~$ nama_perintah --help
+      </pre>
+		<p>dengan perintah <span class="red">info</span></p>
+      <pre class="prettyprint">
+samsul@blankon:~$ info nama_perintah
+      </pre>
+      	</div>
+      	<div id="right_col">
+	  <div class="pull-right"><img height="400px" src="images/boni-okesip.png" alt="Manual" title="manual"></div>
+        </div>
+      </div>
+    </article>
+  </slide>
+
+  <slide>
+    <hgroup>
       <h2 class="centered">Perintah sudo dan su</h2>
     </hgroup>
     <article>
@@ -333,87 +377,22 @@ Password:     </pre>
 
   <slide>
     <hgroup>
-      <h2 class="centered">Manajemen User dan Group</h2>
+      <h2 class="centered">GNU Coreutils</h2>
     </hgroup>
     <article class="auto-fadein">
-      <p>Kelompok User dan Groups</p>
-      <ul class="build">
-      <li><dt>User Admin/Super User</dt>Yang dimaksud dengan super user adalah user yang bertanggung jawab penuh terhadap sistem dengan tugas yang tidak terbatas. Beberapa tugas super user diataranya adalah mengkonfigurasi sistem, melakukan update sistem, melakukan manajemen user dan group, dan sampai menghapus sistem secara keseluruhan..</li>
-      <li><dt>User Sistem</dt>User sistem adalah kelompok user yang menjalankan aplikasi daemon user sistem tersebut. User sistem memiliki UID dan GID di atas 0 dan di bawah 500. contoh user sistem beberapa diataranya adalah mail, news, lp, sshd, apache, dan lain sebagainya.</li>
-      </ul>
-	  <div class="pull-right"><img height="150px" src="images/boni-laptop.png" alt="Sudo and su" title="Sudo and su"></div>
+    <div id="wrap">
+    	<div id="left_col">
+		<p>Sebuah paket yang berisi kumpulan perintah inti, berupa<span class="blue"> utilitas inti</span>  yang ada pada setiap sistem operasi. Merupakan bagian dari <span class="blue">"GNU Software"</span> yang dikembangkan oleh FSF dan komunitas pengembang.</p>
+      <pre class="prettyprint">
+samsul@blankon:~$ dpkg -L coreutils | less
+      </pre>
+      	</div>
+      	<div id="right_col">
+	  <div class="pull-right"><img height="400px" src="images/boni-riset.png" alt="Coreutils" title="Coreutils"></div>
+	</div>
+    </div>
     </article>
   </slide>
-
-  <slide>
-    <hgroup>
-      <h2 class="centered">Manajemen User dan Group (2)</h2>
-    </hgroup>
-    <article class="auto-fadein">
-      <p>Kelompok User dan Groups</p>
-      <ul class="build">
-      <li><dt>User/pengguna biasa</dt> Yang dimaksud dengan user/pengguna biasa adalah user yang dibuat oleh user root dengan UID dan GID diatas 500. User pengguna memiliki wewenang hanya pada home direktori user tersebut sehingga apabila salah satu pengguna mengalami error tidak mempengaruhi user yang lain.</li>
-      </ul>
-	  <div class="pull-right"><img height="200px" src="images/boni-laptop.png" alt="Sudo and su" title="Sudo and su"></div>
-    </article>
-  </slide>
-
-  <slide>
-    <hgroup>
-      <h2 class="centered">Manajemen User dan Group (3)</h2>
-    </hgroup>
-    <article class="auto-fadein">
-      <p>Membuat User</p>
-      <ul class="build">
-      <li>Untuk membuat user dan group hanya dapat dilakukan oleh <span class="red">super user “root”</span>. Perintah untuk membuat user baru adalah <span class="green">adduser[spasi]nama_user</span> sedangkan untuk mengisi password user yang dibuat <span class="red">passwd[spasi]nama_user</span>.<br><br>
-      <pre class="prettyprint">
-root@blankon:~# adduser haryani</pre>
-      </li>
-      </ul>
-	  <div class="pull-right"><img height="200px" src="images/boni-laptop.png" alt="Sudo and su" title="Sudo and su"></div>
-    </article>
-  </slide>
-
-  <slide>
-    <hgroup>
-      <h2 class="centered">Manajemen User dan Group (4)</h2>
-    </hgroup>
-    <article>
-      <p>Menghapus User</p>
-      <ul class="build">
-      <li>Untuk menghapus user jalankan perintah berikut ini: <br><br>
-      <pre class="prettyprint">
-root@blankon:~# userdel haryani     </pre></li>
-      <li>atau<br><br>
-      <pre class="prettyprint">
-root@blankon:~# userdel -r haryani     </pre>
-      </li>
-      </ul>
-	  <div class="pull-right"><img height="200px" src="images/boni-laptop.png" alt="Sudo and su" title="Sudo and su"></div>
-	  <footer class="put-bottom">Catatan: menghapus dengan menggunakan opsi -r, akan menghapus <br>secara keseluruhan home direktori user tersebut.</footer>
-    </article>
-  </slide>
-
-  <slide>
-    <hgroup>
-      <h2 class="centered">Manajemen User dan Group (5)</h2>
-    </hgroup>
-    <article>
-      <p>Membuat Group</p>
-      <ul class="build">
-      <li>Membuat group dengan nama manager <br><br>
-      <pre class="prettyprint">
-root@blankon:~# groupadd manager</pre></li>
-      <li>Menentukan Administrator dan member group manager<br><br>
-      <pre class="prettyprint">
-root@blankon:~# gpasswd -A haryani -M samsul,ubuntu manager</pre>
-      </li>
-      </ul>
-	  <div class="pull-right"><img height="200px" src="images/boni-laptop.png" alt="Sudo and su" title="Sudo and su"></div>
-	  <footer class="put-bottom">Catatan: opsi -A adalah user administrator adalah “haryani”, dan <br>opsi -M adalah user member, yaitu “samsul”, dan “ubuntu”</footer>
-    </article>
-  </slide>
-
 
   <slide class="segue dark quote nobackground">
     <aside class="gdbar right bottom"><img src="images/logo-blankon.png"></aside>
@@ -430,61 +409,141 @@ root@blankon:~# gpasswd -A haryani -M samsul,ubuntu manager</pre>
 
   <slide>
     <hgroup>
-      <h2 class="centered">Manajemen User dan Group (6)</h2>
+      <h2 class="centered">Tips Keren</h2>
     </hgroup>
     <article>
-      <p>Membuat Group</p>
+      <p>Cara efektif bekerja dengan Bash</p>
       <ul class="build">
-      <li>Memberikan password group manager <br><br>
+      <li>Gunakan fitur <span class="red">auto complete</span>, ketikkan awal perintah (atau argumen) lalu tekan [TAB] di keyboard <br><br>
       <pre class="prettyprint">
-root@blankon:~# gpasswd manager</pre></li>
-      <li>Menambah dan menghapus member dari group manager<br><br>
-      <pre class="prettyprint">
-root@blankon:~# gpasswd -a maarif
-Adding user maarif to group manager
-root@blankon:~# gpasswd -d maarif
-Removing user maarif from group manager</pre>
-      </li>
-      </ul>
-	  <footer class="put-bottom">Catatan: opsi -a menambah user baru, dan <br>opsi -d menghapus user.</footer>
-    </article>
-  </slide>
-
-  <slide>
-    <hgroup>
-      <h2 class="centered">Manajemen User dan Group (7)</h2>
-    </hgroup>
-    <article>
-      <p>Membuat Group</p>
-      <ul class="build">
-      <li>Login pada group manager dengan perintah<br><br>
-      <pre class="prettyprint">
-root@blankon:~# su - haryani
-haryani@blankon:~$ newgrp manager
-Password:</pre></li>
-      <li>Karena user “haryani” merupakan admin group maka diminta konfirmasi password group sedangkan untuk user member yaitu “samsul”, dan “ubuntu” tidak diminta konfirmasi password group.</li>
-      <li>Untuk mengetahui daftar group tertentu jalankan perintah berikut<br><br>
-      <pre class="prettyprint">
-haryani@blankon:~$ groups
-manager haryani</pre>
-      </li>
-      </ul>
-    </article>
-  </slide>
-
-  <slide>
-    <hgroup>
-      <h2 class="centered">Manajemen User dan Group (8)</h2>
-    </hgroup>
-    <article>
-      <p>Menghapus Group</p>
-      <ul class="build">
-      <li>Perintah untuk menghapus group adalah <span class="red">groupdel[spasi]nama_group</span> <br><br>
-      <pre class="prettyprint">
-root@blankon:~# groupdel manager
+samsul@blankon:~$ ls /ho [TAB]
       </pre></li>
       </ul>
 	  <div class="pull-right"><img height="200px" src="images/boni-terbang.png" alt="Sudo and su" title="Sudo and su"></div>
+    </article>
+  </slide>
+
+  <slide>
+    <hgroup>
+      <h2 class="centered">Tips Keren (2)</h2>
+    </hgroup>
+    <article>
+    <div id="wrap">
+    <div id="left_col">
+      <ul class="build">
+      <li>Gunakan pintasan keyboard <span class="blue">(shortcut)</span><br><br>
+		 <table style="width:100%">
+		  <tr>
+		    <th>Shortcut Navigasi</th>
+		    <th>Deskripsi</th>
+		  </tr>
+		  <tr>
+		    <td>Arah Kiri/kanan </td>
+		    <td>Berpindah ke kiri/kanan</td>
+		  </tr>
+		  <tr>
+		    <td>Ctrl+A </td>
+		    <td>Berpindah ke awal baris</td>
+		  </tr>
+		  <tr>
+		    <td>Ctrl+E </td>
+		    <td>Berpindah ke akhir baris</td>
+		  </tr>
+		  <tr>
+		    <td>Ctrl+Arah Kanan 	</td>
+		    <td>Berpindah ke kanan satu kata</td>
+		  </tr>
+		  <tr>
+		    <td>Ctrl+Arah Kiri </td>
+		    <td>Berpindah satu kata ke kiri</td>
+		  </tr>
+		</table></li>
+      </ul>
+      </div>
+      <div id="right_col">
+	  <div class="pull-right"><img height="300px" src="images/boni-dokumentasi.png" alt="Tips" title="Tips"></div>
+      </div>
+      </div>
+    </article>
+  </slide>
+
+  <slide>
+    <hgroup>
+      <h2 class="centered">Tips Keren (3)</h2>
+    </hgroup>
+    <article>
+    <div id="wrap">
+    <div id="left_col">
+      <ul class="build">
+      <li>Gunakan pintasan keyboard <span class="blue">(shortcut)</span><br><br>
+		 <table style="width:100%">
+		  <tr>
+		    <th>Shortcut Editing</th>
+		    <th>Deskripsi</th>
+		  </tr>
+		  <tr>
+		    <td>Ctrl+U </td>
+		    <td>Hapus teks/perintah dari posisi kursor ke awal baris</td>
+		  </tr>
+		  <tr>
+		    <td>Ctrl+K </td>
+		    <td>Hapus teks/perintah dari posisi kursor ke akhir baris</td>
+		  </tr>
+		  <tr>
+		    <td>Ctrl+W </td>
+		    <td>Hapus kata/perintah di belakang kursor</td>
+		  </tr>
+		  <tr>
+		    <td>Ctrl+D</td>
+		    <td>Hapus karakter dari depan (delete)</td>
+		  </tr>
+		  <tr>
+		    <td>Ctrl+T </td>
+		    <td>Pindahkan karakter dari kiri dan kanan kursor</td>
+		  </tr>
+		  <tr>
+		    <td>Alt+T </td>
+		    <td>Pindahkan kata dari kiri dan kanan kursor</td>
+		  </tr>
+		</table></li>
+      </ul>
+      </div>
+      <div id="right_col">
+	  <div class="pull-right"><img height="300px" src="images/boni-dokumentasi.png" alt="Tips" title="Tips"></div>
+      </div>
+      </div>
+    </article>
+  </slide>
+
+  <slide>
+    <hgroup>
+      <h2 class="centered">Tips Keren (4)</h2>
+    </hgroup>
+    <article>
+    <div id="wrap">
+    <div id="left_col">
+      <ul class="build">
+      <li>Gunakan pintasan keyboard <span class="blue">(shortcut)</span><br><br>
+		 <table style="width:100%">
+		  <tr>
+		    <th>Shortcut Editing</th>
+		    <th>Deskripsi</th>
+		  </tr>
+		  <tr>
+		    <td>Ctrl+L </td>
+		    <td>Bersihkan layar</td>
+		  </tr>
+		  <tr>
+		    <td>Alt+L </td>
+		    <td>Kecilkan teks dari posisi kursor ke akhir kata</td>
+		  </tr>
+		</table></li>
+      </ul>
+      </div>
+      <div id="right_col">
+	  <div class="pull-right"><img height="300px" src="images/BoniAyoSemuaDiBlankOnIn.png" alt="Tips" title="Tips"></div>
+      </div>
+      </div>
     </article>
   </slide>
 
