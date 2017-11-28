@@ -44,8 +44,7 @@ echo ""
 echo "Cek DNS"
 echo -n "Masukkan alamat IP > "
 read alamatip
-nslookup sccatswa.id $alamatip
-nslookup $alamatip $alamatip
+nslookup sccatswa.id $alamatip && nslookup $alamatip $alamatip
 
 
 
