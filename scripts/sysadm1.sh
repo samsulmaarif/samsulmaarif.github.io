@@ -3,19 +3,23 @@
 # Samsul Ma'arif @ 2017 <samsul@puskomedia.id>
 
 
-# check partisi & mount point
+echo ""
+echo "cek partisi & mount point"
 
 df -h | grep /home
 df -h | grep /var
+echo ""
+echo "Cek RAM & swap"
 free -m
 
-# SSH Server
+echo ""
+echo "Cek SSH Server"
 
 cat /etc/ssh/sshd_config | grep Port
 cat /etc/ssh/sshd_config | grep Root
 
-
-# user KaryawanX
+echo ""
+echo "Cek user KaryawanX"
 for x in {01..10}; do
 	username=Karyawan$x
 	if groups $username | grep &>/dev/null '\bKaryawan\b'; then
@@ -25,7 +29,8 @@ for x in {01..10}; do
 	fi
 done
 
-# user ManajerX
+echo ""
+echo "Cek user ManajerX"
 for x in {01..10}; do
 	username=Manajer$x
 	if groups $username | grep &>/dev/null '\bManajer\b'; then
@@ -35,12 +40,12 @@ for x in {01..10}; do
 	fi
 done
 
-# DNS
-nslookup sccatswa.id
-
+echo ""
+echo "Cek DNS"
 echo -n "Masukkan alamat IP > "
 read alamatip
-nslookup $alamatip
+nslookup sccatswa.id $alamatip
+nslookup $alamatip $alamatip
 
 
 
