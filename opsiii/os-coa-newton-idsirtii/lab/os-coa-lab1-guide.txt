@@ -1,0 +1,428 @@
+##############################################################################
+##### Lab 1 - Keystone, Glance, Neutron, Nova, Horizon, Ceilometer, Heat #####
+##############################################################################
+
+
+########## Eksekusi di Node Openstack ##########
+
+##### IP, Gateway, DNS Resolver, Hostname #####
+nmtui
+
+### Node OpenStack###
+Interface: eth0
+IP Address: 10.X0.X0.10/24
+Gateway: 10.X0.X0.1
+DNS Resolver: 10.X0.X0.1
+
+Interface: eth1
+IP Address: 10.X1.X1.10/24
+
+Hostname: pod0X-openstack
+
+
+-----Verifikasi Konektifitas-----
+ping -c 3 10.X0.X0.1
+ping -c 3 10.X0.X0.10
+ping -c 3 10.X1.X1.1
+ping -c 3 10.X1.X1.10
+ping -c 3 google.com
+
+
+##### Name Resolution #####
+echo "10.X0.X0.10 pod0X-openstack" >> /etc/hosts
+
+##### Verfifikasi Name Resolution #####
+cat /etc/hosts
+
+##### Repositori #####
+yum -y install centos-release-openstack-newton.noarch
+yum -y install https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+[ ! -d /etc/yum.repos.d.orig ] && cp -vR /etc/yum.repos.d /etc/yum.repos.d.orig
+#rm -rf /etc/yum.repos.d/*
+#curl -o /etc/yum.repos.d/centos-cloud-openstack-newton.repo http://10.1.1.240/repo/repositories-#config/centos-cloud-openstack-newton.repo
+#curl -o /etc/yum.repos.d/epel.repo http://10.1.1.240/repo/repositories-config/epel.repo
+yum repolist
+yum -y update
+
+
+##### NTP #####
+yum -y install chrony
+systemctl enable chronyd.service
+systemctl restart chronyd.service
+systemctl status chronyd.service
+chronyc sources
+
+
+##### Firewall #####
+systemctl stop firewalld.service
+systemctl disable firewalld.service
+systemctl status firewalld.service
+
+
+##### Networking #####
+systemctl disable NetworkManager.service
+systemctl stop NetworkManager.service
+systemctl status NetworkManager.service
+systemctl enable network.service
+systemctl restart network.service
+systemctl status network.service
+
+
+##### Paket Utilities #####
+yum -y install vim wget screen crudini
+
+
+
+########## Eksekusi di Node openstack ##########
+
+### Create Storage Partition ###
+yum -y install lvm2
+fdisk -l
+fdisk /dev/vda
+
+---------------------
+device | size | type 
+---------------------
+vda3 	50G 	5 (extended)
+vda5 	10G 	8e (Linux LVM)
+vda6 	10G 	83 (Linux)
+vda7 	10G 	83 (Linux)
+vda8 	10G 	83 (Linux)
+
+partprobe
+
+### LVM Disk for Cinder & Manila ###
+pvcreate -f /dev/vda5
+pvs
+vgcreate -f cinder-volumes /dev/vda5
+vgs
+
+### XFS for Swift ###
+mkfs.xfs /dev/vda6
+mkfs.xfs /dev/vda7
+mkfs.xfs /dev/vda8
+
+##### Paket Packstack #####
+yum -y install openstack-packstack.noarch
+rpm --import https://www.rabbitmq.com/rabbitmq-signing-key-public.asc
+
+##### Generating & Edit Packstack Answer File #####
+packstack --gen-answer-file=paf-os-coa-lab1.txt
+vim paf-os-coa-lab1.txt
+
+CONFIG_CINDER_INSTALL=y
+CONFIG_SWIFT_INSTALL=y
+CONFIG_MANILA_INSTALL=y
+CONFIG_HEAT_INSTALL=y
+CONFIG_NAGIOS_INSTALL=n
+CONFIG_USE_EPEL=y
+#CONFIG_KEYSTONE_ADMIN_PW=9288844cb55f4c64
+CONFIG_KEYSTONE_ADMIN_PW=rahasia
+CONFIG_NEUTRON_ML2_TYPE_DRIVERS=vxlan,vlan,flat
+CONFIG_NEUTRON_ML2_FLAT_NETWORKS=external
+CONFIG_NEUTRON_OVS_BRIDGE_MAPPINGS=external:br-ex
+CONFIG_NEUTRON_OVS_BRIDGE_IFACES=br-ex:eth1
+CONFIG_NEUTRON_OVS_BRIDGES_COMPUTE=br-ex
+CONFIG_PROVISION_DEMO=n
+CONFIG_CINDER_VOLUMES_CREATE=n
+#CONFIG_MANILA_SERVICE_IMAGE_LOCATION=https://www.dropbox.com/s/vi5oeh10q1qkckh/ubuntu_1204_nfs_cifs.qcow2
+##Image Manila untuk Lab1 pod 1-12
+CONFIG_MANILA_SERVICE_IMAGE_LOCATION=http://10.1.1.240/distro/manila/ubuntu_1204_nfs_cifs.qcow2
+##Image Manila untuk Lab2 pod 13-20
+CONFIG_MANILA_SERVICE_IMAGE_LOCATION=http://lab2.btech.id/ubuntu_1204_nfs_cifs.qcow2
+CONFIG_SWIFT_STORAGES=/dev/vda6,/dev/vda7,/dev/vda8
+CONFIG_SWIFT_STORAGE_REPLICAS=2
+CONFIG_SWIFT_STORAGE_FSTYPE=xfs
+
+
+screen -R packstack
+
+packstack --answer-file=paf-os-coa-lab1.txt
+
+### Keluar screen tanpa mematikan tekan Ctrl+A kemudian tekan D
+
+### Menampilkan screen yang aktif
+screen -ls
+
+### Kembali ke screen packstack
+screen -rd packstack
+
+
+
+##################################
+##### Troubleshoot Packstack #####
+##################################
+
+
+##### Troubleshoot Node openstack #####
+#00. Metadata DHCP Agent
+crudini --set /etc/neutron/dhcp_agent.ini DEFAULT enable_isolated_metadata True
+systemctl restart neutron-dhcp-agent
+systemctl status neutron-dhcp-agent
+
+#01. Set password swift untuk ceilometer di konfigurasi Swift Proxy Server
+export `grep CONFIG_SWIFT_KS_PW paf-os-coa-lab1.txt`
+crudini --set /etc/swift/proxy-server.conf filter:ceilometer password $CONFIG_SWIFT_KS_PW
+systemctl restart openstack-swift-proxy
+systemctl status openstack-swift-proxy
+
+#02. Error: Failed to connect socket to '/var/run/libvirt/virtlogd-sock' Solusi: Aktifkan dan jalankan service virtlogd
+systemctl status virtlogd
+systemctl enable virtlogd
+systemctl restart virtlogd
+systemctl status virtlogd
+
+
+#03. Set Hypervisor KVM dan Proxy Client
+crudini --set /etc/nova/nova.conf libvirt virt_type kvm
+systemctl restart openstack-nova-compute
+systemctl status openstack-nova-compute
+
+
+#04. Membuat alias di konfigurasi http agar dashboard bisa dibuka dr internet
+vim /etc/httpd/conf.d/15-horizon_vhost.conf
+
+...
+ServerAlias lab1.btech.id
+ServerAlias lab2.btech.id
+ServerAlias lab3.btech.id
+...
+
+systemctl restart httpd memcached
+systemctl status httpd memcached
+
+
+##### Launch Instance BUI #####
+#Jalankan web browser dan buka alamat http://10.X0.X0.10/dashboard atau http://labX.btech.id:80XX
+
+#04. Login as admin with password on file
+cat /root/keystonerc_admin
+
+#05. Create images
+Download cirros image from Laptop
+#http://10.1.1.240/distro/cirros/cirros-0.3.5-x86_64-disk.img
+https://download.cirros-cloud.net/0.3.5/cirros-0.3.5-x86_64-disk.img
+
+Admin > System > Images
+Click Create Image
+Image Name: cirros0
+Source Type: File
+File: Browse: cirros-0.3.5-x86_64-disk.img 
+Format: QCOW2 - QEMU Emulator
+Create Image
+
+#06. Create external network
+Admin > System > Networks
+Click Create Network
+Name: net-ext
+Project: admin
+Provider Network Type: Flat
+Physical Network: external
+Segmentation ID: [kosongkan]
+Admin State: UP
+Shared: Checked
+External Network: Checked
+Submit
+
+#07. Create external subnet
+Admin > System > Networks
+Click net-ext > Subnets
+Click Create Subnet
+Subnet Name: subnet-ext
+Network Address: 10.X1.X1.0/24
+IP Version: IPv4
+Gateway IP: 10.X1.X1.1
+Disable Gateway: Unchecked
+Enable DHCP: Unchecked
+Allocation Pools: 10.X1.X1.100,10.X1.X1.199
+DNS Name Servers: 10.X1.X1.1
+
+#08. Create internal network & subnet
+Project > Network > Networks
+Click Create Network
+Network Name: net-int0
+Admin State: UP
+Shared: Unchecked
+Create Subnet: Checked
+Subnet Name: subnet-int0
+Network Address: 192.168.X0.0/24
+IP Version: IPv4
+Gateway IP: 192.168.X0.1
+Disable Gateway: Unchecked
+Enable DHCP: Checked
+Allocation Pools: 192.168.X0.100,192.168.X0.199
+DNS Name Servers: 10.X1.X1.1
+
+#09. Create router
+Project > Network > Routers
+Click Create Router
+Router Name: router0
+Admin State: UP
+External Network: net-ext
+
+Click router0
+Click Interfaces
+Click Add Interface
+Subnet: subnet-int0
+
+Dari Host pod0X-openstack ping port net-ext router0
+ping -c 3 10.X1.X1.YYY
+
+#10. Add SSH key
+Project > Compute > Access & Security > Key Pairs
+Click Import Key Pair
+Key Pair Name: key0
+Public Key: [copy and paste SSH public key pod0X-openstack]
+cat .ssh/id_rsa.pub
+
+#11. Add security group rules
+Project > openstack > Access & Security > Security Groups
+Click Create Security Group
+Name: sg0
+Description: My security group 0
+Click Manage Rules on sg0
+
+Click Add Rule
+Rule: ALL ICMP
+Direction: Ingress
+Remote: CIDR
+CIDR: 0.0.0.0/0
+
+Click Add Rule
+Rule: SSH
+Remote: CIDR
+CIDR: 0.0.0.0/0
+
+#12. Launch instance
+Project > Compute > Instances
+Click Launch Instance
+Instance Name: instance0
+Source: Select Boot Source: Image
+Create New Volume: No
+Image Name: cirros0
+Flavor: m1.tiny
+Selected networks: net-int0
+Security Group: sg0
+Key Pair: key0
+Launch Instance
+
+#13. Floating IP address
+instance0 > Click Drop Down Menu ▼
+Click Associate Floating IP
+Click + Alocate Floating IP
+Pool: net-ext
+Click Allocate IP
+IP Address: 10.X1.X1.1YY
+Port to be associated: instance0 192.168.X0.1YY
+
+
+##### Launch Instance CLI #####
+
+#14. Login as admin with password on file
+cat /root/keystonerc_admin
+source /root/keystonerc_admin
+
+#15. Create images
+openstack image list
+yum -y install wget
+wget -c http://10.1.1.240/distro/cirros/cirros-0.3.5-x86_64-disk.img
+#wget -c https://download.cirros-cloud.net/0.3.5/cirros-0.3.5-x86_64-disk.img
+openstack image create --disk-format qcow2 --file cirros-0.3.5-x86_64-disk.img --protected --public cirros1
+openstack image list
+
+#16. Create external network [SKIP - tidak perlu di Eksekusi]
+neutron net-list
+neutron net-create net-ext --provider:network_type flat --provider:physical_network netext --shared --router:external
+neutron net-list
+
+#17. Create external subnet [SKIP - tidak perlu di Eksekusi]
+neutron subnet-list
+neutron subnet-create net-ext 10.X1.X1.0/24 --name subnet-ext --gateway 10.X1.X1.1 --disable-dhcp --allocation-pool start=10.X1.X1.100,end=10.X1.X1.199 --dns-nameserver 10.X1.X1.1
+neutron subnet-list
+
+#18. Create internal network
+neutron net-list
+neutron net-create net-int1
+neutron net-list
+
+#19. Create internal subnet
+neutron subnet-list
+neutron subnet-create net-int1 192.168.X1.0/24 --name subnet-int1 --gateway 192.168.X1.254 --allocation-pool start=192.168.X1.100,end=192.168.X1.199 --dns-nameserver 10.X1.X1.1
+neutron subnet-list
+neutron net-list
+
+#20. Create router
+neutron router-list
+neutron router-create router1
+neutron router-gateway-set router1 net-ext
+neutron router-interface-add router1 subnet-int1
+neutron router-list
+neutron router-port-list router1
+
+Dari Host pod0X-openstack ping port net-ext router1
+ping -c 3 10.X1.X1.YYY
+
+#21. Add SSH key
+openstack keypair list
+openstack keypair create --public-key /root/.ssh/id_rsa.pub key1
+openstack keypair list
+
+#22. Add security group rules
+openstack security group list
+openstack security group create sg1 --description 'My security group 1'
+openstack security group list
+openstack security group rule list sg1
+openstack security group rule create --proto icmp sg1
+openstack security group rule create --proto tcp --dst-port 22 sg1
+openstack security group rule list sg1
+
+#23. Launch instance
+openstack server list
+openstack flavor list
+openstack image list
+openstack security group list
+openstack keypair list
+neutron net-list
+openstack server create --flavor m1.tiny --image cirros1 --key-name key1 --security-group sg1 --nic net-id=[copy paste ID net-int1] instance1
+openstack server list
+
+#24. Floating IP address
+openstack floating ip list
+openstack floating ip create net-ext
+openstack floating ip list
+openstack server list
+openstack server add floating ip instance1 10.X1.X1.YYY
+openstack server list
+openstack floating ip list
+
+
+##### Heat  BUI #####
+#25. Create Stack
+Project > Orchestration > Stacks
+
+#Download Heat Template dari Laptop
+http://10.1.1.240/training/os-coa-newton/lab/os-coa-hot.yml
+
+Project > Orchestration > Stacks
+Click Launch Stack
+Template source : Direct Input
+Template Data: [paste file os-coa-hot.yaml]
+Stack Name : stack0
+password for user "admin" : rahasia
+NetID: net-int0
+Launch
+
+
+##### Heat  CLI #####
+#26. Create Stack
+openstack orchestration service list
+wget -c http://10.1.1.240/training/os-coa-newton/lab/os-coa-hot.yml
+openstack network list
+export NET_ID=$(openstack network list | awk '/ net-int1 / { print $2 }')
+openstack stack create -t os-coa-hot.yml --parameter "NetID=$NET_ID" stack1
+openstack stack list
+openstack stack output show --all stack1
+openstack server list
+openstack stack delete --yes stack1
+
+

@@ -2455,4 +2455,706 @@ Simpan ke: `cirros-0.3.5-x86_64-disk.img'
 +--------------------------------------+----------------------+--------+
 [root@pod04-openstack ~(keystone_admin)]# 
 
+[root@pod04-openstack ~(keystone_admin)]# neutron net-list
++----------------------------------+----------+----------------------------------+
+| id                               | name     | subnets                          |
++----------------------------------+----------+----------------------------------+
+| 19ad6a99-d690-4156-8a9f-         | net-ext  | 117c504c-b98d-41f0-80ea-         |
+| 9a82256f761b                     |          | 1da01d294464 10.41.41.0/24       |
+| c18fa960-204c-46b8-847b-         | net-int0 | 2b3ffbef-ef9c-42ae-              |
+| 720406aba0f6                     |          | b7f7-dbfccb19949f                |
+|                                  |          | 192.168.40.0/24                  |
++----------------------------------+----------+----------------------------------+
+[root@pod04-openstack ~(keystone_admin)]# # skip
+[root@pod04-openstack ~(keystone_admin)]# neutron net-create net-int1
+Created a new network:
++---------------------------+--------------------------------------+
+| Field                     | Value                                |
++---------------------------+--------------------------------------+
+| admin_state_up            | True                                 |
+| availability_zone_hints   |                                      |
+| availability_zones        |                                      |
+| created_at                | 2017-12-18T02:53:45Z                 |
+| description               |                                      |
+| id                        | 8daa4dc7-1051-427d-a6f0-0f1b14474faa |
+| ipv4_address_scope        |                                      |
+| ipv6_address_scope        |                                      |
+| mtu                       | 1450                                 |
+| name                      | net-int1                             |
+| project_id                | a066e9524c3b477d93b01a331d69f7c6     |
+| provider:network_type     | vxlan                                |
+| provider:physical_network |                                      |
+| provider:segmentation_id  | 75                                   |
+| revision_number           | 2                                    |
+| router:external           | False                                |
+| shared                    | False                                |
+| status                    | ACTIVE                               |
+| subnets                   |                                      |
+| tags                      |                                      |
+| tenant_id                 | a066e9524c3b477d93b01a331d69f7c6     |
+| updated_at                | 2017-12-18T02:53:45Z                 |
++---------------------------+--------------------------------------+
+[root@pod04-openstack ~(keystone_admin)]# neutron net-list
++----------------------------------+----------+----------------------------------+
+| id                               | name     | subnets                          |
++----------------------------------+----------+----------------------------------+
+| 19ad6a99-d690-4156-8a9f-         | net-ext  | 117c504c-b98d-41f0-80ea-         |
+| 9a82256f761b                     |          | 1da01d294464 10.41.41.0/24       |
+| 8daa4dc7-1051-427d-              | net-int1 |                                  |
+| a6f0-0f1b14474faa                |          |                                  |
+| c18fa960-204c-46b8-847b-         | net-int0 | 2b3ffbef-ef9c-42ae-              |
+| 720406aba0f6                     |          | b7f7-dbfccb19949f                |
+|                                  |          | 192.168.40.0/24                  |
++----------------------------------+----------+----------------------------------+
+[root@pod04-openstack ~(keystone_admin)]# neutron subnet-list
++-----------------------+-------------+-----------------+------------------------+
+| id                    | name        | cidr            | allocation_pools       |
++-----------------------+-------------+-----------------+------------------------+
+| 117c504c-b98d-41f0    | subnet-ext  | 10.41.41.0/24   | {"start":              |
+| -80ea-1da01d294464    |             |                 | "10.41.41.100", "end": |
+|                       |             |                 | "10.41.41.199"}        |
+| 2b3ffbef-ef9c-42ae-   | subnet-int0 | 192.168.40.0/24 | {"start":              |
+| b7f7-dbfccb19949f     |             |                 | "192.168.40.100",      |
+|                       |             |                 | "end":                 |
+|                       |             |                 | "192.168.40.199"}      |
++-----------------------+-------------+-----------------+------------------------+
+[root@pod04-openstack ~(keystone_admin)]# neutron subnet-create net-int1 192.168.41.0/24 --name subnet-int1 --gateway 192.168.41.254 --allocation-pool start=192.168.41.100,end=192.168.41.199 --dns-nameserver 10.41.41.1
+Created a new subnet:
++-------------------+------------------------------------------------------+
+| Field             | Value                                                |
++-------------------+------------------------------------------------------+
+| allocation_pools  | {"start": "192.168.41.100", "end": "192.168.41.199"} |
+| cidr              | 192.168.41.0/24                                      |
+| created_at        | 2017-12-18T02:55:39Z                                 |
+| description       |                                                      |
+| dns_nameservers   | 10.41.41.1                                           |
+| enable_dhcp       | True                                                 |
+| gateway_ip        | 192.168.41.254                                       |
+| host_routes       |                                                      |
+| id                | 82a8ccfd-5116-4ef8-b4e1-69a003aed7bb                 |
+| ip_version        | 4                                                    |
+| ipv6_address_mode |                                                      |
+| ipv6_ra_mode      |                                                      |
+| name              | subnet-int1                                          |
+| network_id        | 8daa4dc7-1051-427d-a6f0-0f1b14474faa                 |
+| project_id        | a066e9524c3b477d93b01a331d69f7c6                     |
+| revision_number   | 2                                                    |
+| service_types     |                                                      |
+| subnetpool_id     |                                                      |
+| tenant_id         | a066e9524c3b477d93b01a331d69f7c6                     |
+| updated_at        | 2017-12-18T02:55:39Z                                 |
++-------------------+------------------------------------------------------+
+[root@pod04-openstack ~(keystone_admin)]# neutron subnet-list
++-----------------------+-------------+-----------------+------------------------+
+| id                    | name        | cidr            | allocation_pools       |
++-----------------------+-------------+-----------------+------------------------+
+| 117c504c-b98d-41f0    | subnet-ext  | 10.41.41.0/24   | {"start":              |
+| -80ea-1da01d294464    |             |                 | "10.41.41.100", "end": |
+|                       |             |                 | "10.41.41.199"}        |
+| 2b3ffbef-ef9c-42ae-   | subnet-int0 | 192.168.40.0/24 | {"start":              |
+| b7f7-dbfccb19949f     |             |                 | "192.168.40.100",      |
+|                       |             |                 | "end":                 |
+|                       |             |                 | "192.168.40.199"}      |
+| 82a8ccfd-5116-4ef8-b4 | subnet-int1 | 192.168.41.0/24 | {"start":              |
+| e1-69a003aed7bb       |             |                 | "192.168.41.100",      |
+|                       |             |                 | "end":                 |
+|                       |             |                 | "192.168.41.199"}      |
++-----------------------+-------------+-----------------+------------------------+
+[root@pod04-openstack ~(keystone_admin)]# neutron net-list
++----------------------------------+----------+----------------------------------+
+| id                               | name     | subnets                          |
++----------------------------------+----------+----------------------------------+
+| 19ad6a99-d690-4156-8a9f-         | net-ext  | 117c504c-b98d-41f0-80ea-         |
+| 9a82256f761b                     |          | 1da01d294464 10.41.41.0/24       |
+| 8daa4dc7-1051-427d-              | net-int1 | 82a8ccfd-5116-4ef8-b4e1-69a003ae |
+| a6f0-0f1b14474faa                |          | d7bb 192.168.41.0/24             |
+| c18fa960-204c-46b8-847b-         | net-int0 | 2b3ffbef-ef9c-42ae-              |
+| 720406aba0f6                     |          | b7f7-dbfccb19949f                |
+|                                  |          | 192.168.40.0/24                  |
++----------------------------------+----------+----------------------------------+
+[root@pod04-openstack ~(keystone_admin)]# 
+
+
+[root@pod04-openstack ~(keystone_admin)]# neutron router-list
++-----------------------+---------+------------------------+-------------+-------+
+| id                    | name    | external_gateway_info  | distributed | ha    |
++-----------------------+---------+------------------------+-------------+-------+
+| 98040e3b-2816-4627    | router0 | {"network_id":         | False       | False |
+| -b95d-85091d7505dd    |         | "19ad6a99-d690-4156    |             |       |
+|                       |         | -8a9f-9a82256f761b",   |             |       |
+|                       |         | "enable_snat": true,   |             |       |
+|                       |         | "external_fixed_ips":  |             |       |
+|                       |         | [{"subnet_id":         |             |       |
+|                       |         | "117c504c-b98d-41f0    |             |       |
+|                       |         | -80ea-1da01d294464",   |             |       |
+|                       |         | "ip_address":          |             |       |
+|                       |         | "10.41.41.106"}]}      |             |       |
++-----------------------+---------+------------------------+-------------+-------+
+[root@pod04-openstack ~(keystone_admin)]# neutron router-create router1
+Created a new router:
++-------------------------+--------------------------------------+
+| Field                   | Value                                |
++-------------------------+--------------------------------------+
+| admin_state_up          | True                                 |
+| availability_zone_hints |                                      |
+| availability_zones      |                                      |
+| created_at              | 2017-12-18T02:57:37Z                 |
+| description             |                                      |
+| distributed             | False                                |
+| external_gateway_info   |                                      |
+| flavor_id               |                                      |
+| ha                      | False                                |
+| id                      | 7eeb26a0-ecdf-45d0-9095-942688f31480 |
+| name                    | router1                              |
+| project_id              | a066e9524c3b477d93b01a331d69f7c6     |
+| revision_number         | 3                                    |
+| routes                  |                                      |
+| status                  | ACTIVE                               |
+| tenant_id               | a066e9524c3b477d93b01a331d69f7c6     |
+| updated_at              | 2017-12-18T02:57:37Z                 |
++-------------------------+--------------------------------------+
+[root@pod04-openstack ~(keystone_admin)]# neutron router-gateway-set router1 net-ext
+Set gateway for router router1
+[root@pod04-openstack ~(keystone_admin)]# neutron router-interface-add router1 subnet-int1
+Added interface 51123469-48e8-4d89-a2b0-8c4bd2a93bb7 to router router1.
+[root@pod04-openstack ~(keystone_admin)]# neutron router-list
++-----------------------+---------+------------------------+-------------+-------+
+| id                    | name    | external_gateway_info  | distributed | ha    |
++-----------------------+---------+------------------------+-------------+-------+
+| 7eeb26a0-ecdf-45d0-90 | router1 | {"network_id":         | False       | False |
+| 95-942688f31480       |         | "19ad6a99-d690-4156    |             |       |
+|                       |         | -8a9f-9a82256f761b",   |             |       |
+|                       |         | "enable_snat": true,   |             |       |
+|                       |         | "external_fixed_ips":  |             |       |
+|                       |         | [{"subnet_id":         |             |       |
+|                       |         | "117c504c-b98d-41f0    |             |       |
+|                       |         | -80ea-1da01d294464",   |             |       |
+|                       |         | "ip_address":          |             |       |
+|                       |         | "10.41.41.110"}]}      |             |       |
+| 98040e3b-2816-4627    | router0 | {"network_id":         | False       | False |
+| -b95d-85091d7505dd    |         | "19ad6a99-d690-4156    |             |       |
+|                       |         | -8a9f-9a82256f761b",   |             |       |
+|                       |         | "enable_snat": true,   |             |       |
+|                       |         | "external_fixed_ips":  |             |       |
+|                       |         | [{"subnet_id":         |             |       |
+|                       |         | "117c504c-b98d-41f0    |             |       |
+|                       |         | -80ea-1da01d294464",   |             |       |
+|                       |         | "ip_address":          |             |       |
+|                       |         | "10.41.41.106"}]}      |             |       |
++-----------------------+---------+------------------------+-------------+-------+
+[root@pod04-openstack ~(keystone_admin)]# neutron router-port-list router1
++--------------------------+------+-------------------+--------------------------+
+| id                       | name | mac_address       | fixed_ips                |
++--------------------------+------+-------------------+--------------------------+
+| 1386c1ef-4532-4184-bbbe- |      | fa:16:3e:d0:f3:f5 | {"subnet_id": "117c504c- |
+| 13d762baf28f             |      |                   | b98d-41f0-80ea-          |
+|                          |      |                   | 1da01d294464",           |
+|                          |      |                   | "ip_address":            |
+|                          |      |                   | "10.41.41.110"}          |
+| 51123469-48e8-4d89-a2b0- |      | fa:16:3e:11:f5:97 | {"subnet_id": "82a8ccfd- |
+| 8c4bd2a93bb7             |      |                   | 5116-4ef8-b4e1-69a003aed |
+|                          |      |                   | 7bb", "ip_address":      |
+|                          |      |                   | "192.168.41.254"}        |
++--------------------------+------+-------------------+--------------------------+
+[root@pod04-openstack ~(keystone_admin)]# 
+[root@pod04-openstack ~(keystone_admin)]# ping -c3 10.41.41.110
+PING 10.41.41.110 (10.41.41.110) 56(84) bytes of data.
+64 bytes from 10.41.41.110: icmp_seq=1 ttl=64 time=1.00 ms
+64 bytes from 10.41.41.110: icmp_seq=2 ttl=64 time=0.105 ms
+64 bytes from 10.41.41.110: icmp_seq=3 ttl=64 time=0.082 ms
+
+--- 10.41.41.110 ping statistics ---
+3 packets transmitted, 3 received, 0% packet loss, time 2000ms
+rtt min/avg/max/mdev = 0.082/0.396/1.003/0.429 ms
+[root@pod04-openstack ~(keystone_admin)]#
+
+
+
+[root@pod04-openstack ~(keystone_admin)]# openstack keypair list
++------+-------------------------------------------------+
+| Name | Fingerprint                                     |
++------+-------------------------------------------------+
+| key0 | 17:4d:04:4f:ec:75:67:db:96:68:05:e9:05:00:c4:6a |
++------+-------------------------------------------------+
+[root@pod04-openstack ~(keystone_admin)]# openstack keypair create --public-key /root/.ssh/id_rsa.pub key1
++-------------+-------------------------------------------------+
+| Field       | Value                                           |
++-------------+-------------------------------------------------+
+| fingerprint | 17:4d:04:4f:ec:75:67:db:96:68:05:e9:05:00:c4:6a |
+| name        | key1                                            |
+| user_id     | cc5b857c0f17409aa9951a05eab15720                |
++-------------+-------------------------------------------------+
+[root@pod04-openstack ~(keystone_admin)]# openstack keypair list
++------+-------------------------------------------------+
+| Name | Fingerprint                                     |
++------+-------------------------------------------------+
+| key0 | 17:4d:04:4f:ec:75:67:db:96:68:05:e9:05:00:c4:6a |
+| key1 | 17:4d:04:4f:ec:75:67:db:96:68:05:e9:05:00:c4:6a |
++------+-------------------------------------------------+
+[root@pod04-openstack ~(keystone_admin)]# 
+
+
+[root@pod04-openstack ~(keystone_admin)]# openstack security group list
++----------------------+---------+----------------------+------------------------+
+| ID                   | Name    | Description          | Project                |
++----------------------+---------+----------------------+------------------------+
+| 2b995599-a0b9-4dd6-8 | default | Default security     | 02c2131dd355498db37707 |
+| 218-e7bcf1b15d72     |         | group                | faf6fd3b66             |
+| 408d5a09-4ecb-4e32   | sg0     | My security group 0  | a066e9524c3b477d93b01a |
+| -94ec-45709a3bf0de   |         |                      | 331d69f7c6             |
+| 4341a5f9-66da-4c88   | default | Default security     | a066e9524c3b477d93b01a |
+| -867a-3cfbdd981eb3   |         | group                | 331d69f7c6             |
++----------------------+---------+----------------------+------------------------+
+[root@pod04-openstack ~(keystone_admin)]# openstack security group create sg1 --description 'percobaan security grup 1'
++-----------------+--------------------------------------------------------------+
+| Field           | Value                                                        |
++-----------------+--------------------------------------------------------------+
+| created_at      | 2017-12-18T03:09:20Z                                         |
+| description     | percobaan security grup 1                                    |
+| headers         |                                                              |
+| id              | 3425a088-24e8-4755-89f4-ff6ff0bbc20c                         |
+| name            | sg1                                                          |
+| project_id      | a066e9524c3b477d93b01a331d69f7c6                             |
+| project_id      | a066e9524c3b477d93b01a331d69f7c6                             |
+| revision_number | 1                                                            |
+| rules           | created_at='2017-12-18T03:09:20Z', direction='egress',       |
+|                 | ethertype='IPv4', id='3d483573-6fdf-484b-b6dd-f5968ba88c6c', |
+|                 | project_id='a066e9524c3b477d93b01a331d69f7c6',               |
+|                 | revision_number='1', updated_at='2017-12-18T03:09:20Z'       |
+|                 | created_at='2017-12-18T03:09:20Z', direction='egress',       |
+|                 | ethertype='IPv6', id='625d0cf4-9918-44fc-b9ec-70f1199fe025', |
+|                 | project_id='a066e9524c3b477d93b01a331d69f7c6',               |
+|                 | revision_number='1', updated_at='2017-12-18T03:09:20Z'       |
+| updated_at      | 2017-12-18T03:09:20Z                                         |
++-----------------+--------------------------------------------------------------+
+[root@pod04-openstack ~(keystone_admin)]# openstack security group list
++----------------------+---------+----------------------+------------------------+
+| ID                   | Name    | Description          | Project                |
++----------------------+---------+----------------------+------------------------+
+| 2b995599-a0b9-4dd6-8 | default | Default security     | 02c2131dd355498db37707 |
+| 218-e7bcf1b15d72     |         | group                | faf6fd3b66             |
+| 3425a088-24e8-4755-8 | sg1     | percobaan security   | a066e9524c3b477d93b01a |
+| 9f4-ff6ff0bbc20c     |         | grup 1               | 331d69f7c6             |
+| 408d5a09-4ecb-4e32   | sg0     | My security group 0  | a066e9524c3b477d93b01a |
+| -94ec-45709a3bf0de   |         |                      | 331d69f7c6             |
+| 4341a5f9-66da-4c88   | default | Default security     | a066e9524c3b477d93b01a |
+| -867a-3cfbdd981eb3   |         | group                | 331d69f7c6             |
++----------------------+---------+----------------------+------------------------+
+[root@pod04-openstack ~(keystone_admin)]# openstack security group rule create --proto icmp sg1
++-------------------+--------------------------------------+
+| Field             | Value                                |
++-------------------+--------------------------------------+
+| created_at        | 2017-12-18T03:16:44Z                 |
+| description       |                                      |
+| direction         | ingress                              |
+| ethertype         | IPv4                                 |
+| headers           |                                      |
+| id                | 978b49d2-429b-4387-a004-4b6bf1709431 |
+| port_range_max    | None                                 |
+| port_range_min    | None                                 |
+| project_id        | a066e9524c3b477d93b01a331d69f7c6     |
+| project_id        | a066e9524c3b477d93b01a331d69f7c6     |
+| protocol          | icmp                                 |
+| remote_group_id   | None                                 |
+| remote_ip_prefix  | 0.0.0.0/0                            |
+| revision_number   | 1                                    |
+| security_group_id | 3425a088-24e8-4755-89f4-ff6ff0bbc20c |
+| updated_at        | 2017-12-18T03:16:44Z                 |
++-------------------+--------------------------------------+
+[root@pod04-openstack ~(keystone_admin)]# openstack security group rule create --proto tcp --dst-port 22 sg1
++-------------------+--------------------------------------+
+| Field             | Value                                |
++-------------------+--------------------------------------+
+| created_at        | 2017-12-18T03:17:06Z                 |
+| description       |                                      |
+| direction         | ingress                              |
+| ethertype         | IPv4                                 |
+| headers           |                                      |
+| id                | aff63d58-4b62-4f81-95f3-ace2ff0ee423 |
+| port_range_max    | 22                                   |
+| port_range_min    | 22                                   |
+| project_id        | a066e9524c3b477d93b01a331d69f7c6     |
+| project_id        | a066e9524c3b477d93b01a331d69f7c6     |
+| protocol          | tcp                                  |
+| remote_group_id   | None                                 |
+| remote_ip_prefix  | 0.0.0.0/0                            |
+| revision_number   | 1                                    |
+| security_group_id | 3425a088-24e8-4755-89f4-ff6ff0bbc20c |
+| updated_at        | 2017-12-18T03:17:06Z                 |
++-------------------+--------------------------------------+
+[root@pod04-openstack ~(keystone_admin)]# openstack security group list sg1
+usage: openstack security group list [-h] [-f {csv,json,table,value,yaml}]
+                                     [-c COLUMN] [--max-width <integer>]
+                                     [--noindent]
+                                     [--quote {all,minimal,none,nonnumeric}]
+openstack security group list: error: unrecognized arguments: sg1
+[root@pod04-openstack ~(keystone_admin)]# openstack security group rule list sg1
++--------------------+-------------+-----------+------------+-----------------------+
+| ID                 | IP Protocol | IP Range  | Port Range | Remote Security Group |
++--------------------+-------------+-----------+------------+-----------------------+
+| 3d483573-6fdf-     | None        | None      |            | None                  |
+| 484b-b6dd-         |             |           |            |                       |
+| f5968ba88c6c       |             |           |            |                       |
+| 625d0cf4-9918      | None        | None      |            | None                  |
+| -44fc-b9ec-        |             |           |            |                       |
+| 70f1199fe025       |             |           |            |                       |
+| 978b49d2-429b-4387 | icmp        | 0.0.0.0/0 |            | None                  |
+| -a004-4b6bf1709431 |             |           |            |                       |
+| aff63d58-4b62-4f81 | tcp         | 0.0.0.0/0 | 22:22      | None                  |
+| -95f3-ace2ff0ee423 |             |           |            |                       |
++--------------------+-------------+-----------+------------+-----------------------+
+[root@pod04-openstack ~(keystone_admin)]# 
+
+
+[root@pod04-openstack ~(keystone_admin)]# openstack server list
++----------------------+-----------+--------+-----------------------+------------+
+| ID                   | Name      | Status | Networks              | Image Name |
++----------------------+-----------+--------+-----------------------+------------+
+| 13b119b6-bad4-46d7-b | instance0 | ACTIVE | net-                  |            |
+| 324-88e5043edbe2     |           |        | int0=192.168.40.109,  |            |
+|                      |           |        | 10.41.41.103          |            |
++----------------------+-----------+--------+-----------------------+------------+
+[root@pod04-openstack ~(keystone_admin)]# openstack flavor list
++----+-----------+-------+------+-----------+-------+-----------+
+| ID | Name      |   RAM | Disk | Ephemeral | VCPUs | Is Public |
++----+-----------+-------+------+-----------+-------+-----------+
+| 1  | m1.tiny   |   512 |    1 |         0 |     1 | True      |
+| 2  | m1.small  |  2048 |   20 |         0 |     1 | True      |
+| 3  | m1.medium |  4096 |   40 |         0 |     2 | True      |
+| 4  | m1.large  |  8192 |   80 |         0 |     4 | True      |
+| 5  | m1.xlarge | 16384 |  160 |         0 |     8 | True      |
+| 66 | m1.manila |   512 |    0 |         0 |     1 | True      |
++----+-----------+-------+------+-----------+-------+-----------+
+[root@pod04-openstack ~(keystone_admin)]# openstack image list
++--------------------------------------+----------------------+--------+
+| ID                                   | Name                 | Status |
++--------------------------------------+----------------------+--------+
+| a16be42b-41c3-47ad-884c-f6c8a51d6ff8 | cirros1              | active |
+| 96308fa6-9b05-4e5d-b419-df1c0c516409 | cirros0              | active |
+| 173bd6a8-3e75-4ba6-b017-bdc70849ee7d | manila-service-image | active |
++--------------------------------------+----------------------+--------+
+[root@pod04-openstack ~(keystone_admin)]# openstack security group list
++----------------------+---------+----------------------+------------------------+
+| ID                   | Name    | Description          | Project                |
++----------------------+---------+----------------------+------------------------+
+| 2b995599-a0b9-4dd6-8 | default | Default security     | 02c2131dd355498db37707 |
+| 218-e7bcf1b15d72     |         | group                | faf6fd3b66             |
+| 3425a088-24e8-4755-8 | sg1     | percobaan security   | a066e9524c3b477d93b01a |
+| 9f4-ff6ff0bbc20c     |         | grup 1               | 331d69f7c6             |
+| 408d5a09-4ecb-4e32   | sg0     | My security group 0  | a066e9524c3b477d93b01a |
+| -94ec-45709a3bf0de   |         |                      | 331d69f7c6             |
+| 4341a5f9-66da-4c88   | default | Default security     | a066e9524c3b477d93b01a |
+| -867a-3cfbdd981eb3   |         | group                | 331d69f7c6             |
++----------------------+---------+----------------------+------------------------+
+[root@pod04-openstack ~(keystone_admin)]# openstack keypair list
++------+-------------------------------------------------+
+| Name | Fingerprint                                     |
++------+-------------------------------------------------+
+| key0 | 17:4d:04:4f:ec:75:67:db:96:68:05:e9:05:00:c4:6a |
+| key1 | 17:4d:04:4f:ec:75:67:db:96:68:05:e9:05:00:c4:6a |
++------+-------------------------------------------------+
+[root@pod04-openstack ~(keystone_admin)]# neutron net-list
++----------------------------------+----------+----------------------------------+
+| id                               | name     | subnets                          |
++----------------------------------+----------+----------------------------------+
+| 19ad6a99-d690-4156-8a9f-         | net-ext  | 117c504c-b98d-41f0-80ea-         |
+| 9a82256f761b                     |          | 1da01d294464 10.41.41.0/24       |
+| 8daa4dc7-1051-427d-              | net-int1 | 82a8ccfd-5116-4ef8-b4e1-69a003ae |
+| a6f0-0f1b14474faa                |          | d7bb 192.168.41.0/24             |
+| c18fa960-204c-46b8-847b-         | net-int0 | 2b3ffbef-ef9c-42ae-              |
+| 720406aba0f6                     |          | b7f7-dbfccb19949f                |
+|                                  |          | 192.168.40.0/24                  |
++----------------------------------+----------+----------------------------------+
+[root@pod04-openstack ~(keystone_admin)]# openstack server create --flavor m1.tiny --image cirros1 --key-name key1 --security-group sg1 --nix net-id=8daa4dc7-1051-427d-a6f0-0f1b14474faa instance1
+usage: openstack server create [-h] [-f {json,shell,table,value,yaml}]
+                               [-c COLUMN] [--max-width <integer>]
+                               [--noindent] [--prefix PREFIX]
+                               (--image <image> | --volume <volume>) --flavor
+                               <flavor>
+                               [--security-group <security-group-name>]
+                               [--key-name <key-name>]
+                               [--property <key=value>]
+                               [--file <dest-filename=source-filename>]
+                               [--user-data <user-data>]
+                               [--availability-zone <zone-name>]
+                               [--block-device-mapping <dev-name=mapping>]
+                               [--nic <net-id=net-uuid,v4-fixed-ip=ip-addr,v6-fixed-ip=ip-addr,port-id=port-uuid>]
+                               [--hint <key=value>]
+                               [--config-drive <config-drive-volume>|True]
+                               [--min <count>] [--max <count>] [--wait]
+                               <server-name>
+openstack server create: error: unrecognized arguments: --nix instance1
+[root@pod04-openstack ~(keystone_admin)]# openstack server create --flavor m1.tiny --image cirros1 --key-name key1 --security-group sg1 --nic net-id=8daa4dc7-1051-427d-a6f0-0f1b14474faa instance1
++--------------------------------------+-----------------------------------------+
+| Field                                | Value                                   |
++--------------------------------------+-----------------------------------------+
+| OS-DCF:diskConfig                    | MANUAL                                  |
+| OS-EXT-AZ:availability_zone          |                                         |
+| OS-EXT-SRV-ATTR:host                 | None                                    |
+| OS-EXT-SRV-ATTR:hypervisor_hostname  | None                                    |
+| OS-EXT-SRV-ATTR:instance_name        |                                         |
+| OS-EXT-STS:power_state               | NOSTATE                                 |
+| OS-EXT-STS:task_state                | scheduling                              |
+| OS-EXT-STS:vm_state                  | building                                |
+| OS-SRV-USG:launched_at               | None                                    |
+| OS-SRV-USG:terminated_at             | None                                    |
+| accessIPv4                           |                                         |
+| accessIPv6                           |                                         |
+| addresses                            |                                         |
+| adminPass                            | wF6CietCQddz                            |
+| config_drive                         |                                         |
+| created                              | 2017-12-18T03:32:08Z                    |
+| flavor                               | m1.tiny (1)                             |
+| hostId                               |                                         |
+| id                                   | b8527e12-e90b-487e-968d-c25ffd9517a8    |
+| image                                | cirros1 (a16be42b-41c3-47ad-884c-       |
+|                                      | f6c8a51d6ff8)                           |
+| key_name                             | key1                                    |
+| name                                 | instance1                               |
+| os-extended-volumes:volumes_attached | []                                      |
+| progress                             | 0                                       |
+| project_id                           | a066e9524c3b477d93b01a331d69f7c6        |
+| properties                           |                                         |
+| security_groups                      | [{u'name': u'sg1'}]                     |
+| status                               | BUILD                                   |
+| updated                              | 2017-12-18T03:32:08Z                    |
+| user_id                              | cc5b857c0f17409aa9951a05eab15720        |
++--------------------------------------+-----------------------------------------+
+[root@pod04-openstack ~(keystone_admin)]# openstack server list
++----------------------+-----------+--------+-----------------------+------------+
+| ID                   | Name      | Status | Networks              | Image Name |
++----------------------+-----------+--------+-----------------------+------------+
+| b8527e12-e90b-487e-  | instance1 | ACTIVE | net-                  | cirros1    |
+| 968d-c25ffd9517a8    |           |        | int1=192.168.41.106   |            |
+| 13b119b6-bad4-46d7-b | instance0 | ACTIVE | net-                  |            |
+| 324-88e5043edbe2     |           |        | int0=192.168.40.109,  |            |
+|                      |           |        | 10.41.41.103          |            |
++----------------------+-----------+--------+-----------------------+------------+
+[root@pod04-openstack ~(keystone_admin)]# 
+
+
+[root@pod04-openstack ~(keystone_admin)]# openstack floating ip list
++-------------------+---------------------+------------------+---------------------+
+| ID                | Floating IP Address | Fixed IP Address | Port                |
++-------------------+---------------------+------------------+---------------------+
+| c360be15-5d17-4b9 | 10.41.41.103        | 192.168.40.109   | c7f30f95-a6f8-4865  |
+| 1-b3ee-           |                     |                  | -be1c-b8c8562d26e9  |
+| 17ae35a41711      |                     |                  |                     |
++-------------------+---------------------+------------------+---------------------+
+[root@pod04-openstack ~(keystone_admin)]# openstack floating ip create net-ext
++---------------------+--------------------------------------+
+| Field               | Value                                |
++---------------------+--------------------------------------+
+| created_at          | 2017-12-18T03:34:22Z                 |
+| description         |                                      |
+| fixed_ip_address    | None                                 |
+| floating_ip_address | 10.41.41.109                         |
+| floating_network_id | 19ad6a99-d690-4156-8a9f-9a82256f761b |
+| headers             |                                      |
+| id                  | 7f250619-78df-4f69-88e6-f5b19611d80e |
+| port_id             | None                                 |
+| project_id          | a066e9524c3b477d93b01a331d69f7c6     |
+| project_id          | a066e9524c3b477d93b01a331d69f7c6     |
+| revision_number     | 1                                    |
+| router_id           | None                                 |
+| status              | DOWN                                 |
+| updated_at          | 2017-12-18T03:34:22Z                 |
++---------------------+--------------------------------------+
+[root@pod04-openstack ~(keystone_admin)]# openstack floating ip list
++-------------------+---------------------+------------------+---------------------+
+| ID                | Floating IP Address | Fixed IP Address | Port                |
++-------------------+---------------------+------------------+---------------------+
+| 7f250619-78df-4f6 | 10.41.41.109        | None             | None                |
+| 9-88e6-f5b19611d8 |                     |                  |                     |
+| 0e                |                     |                  |                     |
+| c360be15-5d17-4b9 | 10.41.41.103        | 192.168.40.109   | c7f30f95-a6f8-4865  |
+| 1-b3ee-           |                     |                  | -be1c-b8c8562d26e9  |
+| 17ae35a41711      |                     |                  |                     |
++-------------------+---------------------+------------------+---------------------+
+[root@pod04-openstack ~(keystone_admin)]# openstack server list
++----------------------+-----------+--------+-----------------------+------------+
+| ID                   | Name      | Status | Networks              | Image Name |
++----------------------+-----------+--------+-----------------------+------------+
+| b8527e12-e90b-487e-  | instance1 | ACTIVE | net-                  | cirros1    |
+| 968d-c25ffd9517a8    |           |        | int1=192.168.41.106   |            |
+| 13b119b6-bad4-46d7-b | instance0 | ACTIVE | net-                  |            |
+| 324-88e5043edbe2     |           |        | int0=192.168.40.109,  |            |
+|                      |           |        | 10.41.41.103          |            |
++----------------------+-----------+--------+-----------------------+------------+
+[root@pod04-openstack ~(keystone_admin)]# openstack server add floating ip instance1 10.41.41.109
+[root@pod04-openstack ~(keystone_admin)]# openstack server list
++----------------------+-----------+--------+-----------------------+------------+
+| ID                   | Name      | Status | Networks              | Image Name |
++----------------------+-----------+--------+-----------------------+------------+
+| b8527e12-e90b-487e-  | instance1 | ACTIVE | net-                  | cirros1    |
+| 968d-c25ffd9517a8    |           |        | int1=192.168.41.106,  |            |
+|                      |           |        | 10.41.41.109          |            |
+| 13b119b6-bad4-46d7-b | instance0 | ACTIVE | net-                  |            |
+| 324-88e5043edbe2     |           |        | int0=192.168.40.109,  |            |
+|                      |           |        | 10.41.41.103          |            |
++----------------------+-----------+--------+-----------------------+------------+
+[root@pod04-openstack ~(keystone_admin)]# openstack floating ip list
++-------------------+---------------------+------------------+---------------------+
+| ID                | Floating IP Address | Fixed IP Address | Port                |
++-------------------+---------------------+------------------+---------------------+
+| 7f250619-78df-4f6 | 10.41.41.109        | 192.168.41.106   | 8d6382dc-f31b-4ccf- |
+| 9-88e6-f5b19611d8 |                     |                  | b560-98556fb5fdc8   |
+| 0e                |                     |                  |                     |
+| c360be15-5d17-4b9 | 10.41.41.103        | 192.168.40.109   | c7f30f95-a6f8-4865  |
+| 1-b3ee-           |                     |                  | -be1c-b8c8562d26e9  |
+| 17ae35a41711      |                     |                  |                     |
++-------------------+---------------------+------------------+---------------------+
+[root@pod04-openstack ~(keystone_admin)]# 
+
+
+[root@pod04-openstack ~(keystone_admin)]# openstack orchestration service list
++-----------+-----------+-----------+-----------+--------+--------------+--------+
+| hostname  | binary    | engine_id | host      | topic  | updated_at   | status |
++-----------+-----------+-----------+-----------+--------+--------------+--------+
+| pod04-ope | heat-     | 0dd2376c- | pod04-ope | engine | 2017-12-18T0 | up     |
+| nstack    | engine    | 9d70-4fd4 | nstack    |        | 3:48:33.0000 |        |
+|           |           | -864a-f8d |           |        | 00           |        |
+|           |           | 93baa8de0 |           |        |              |        |
+| pod04-ope | heat-     | 292533e6- | pod04-ope | engine | 2017-12-18T0 | up     |
+| nstack    | engine    | b062      | nstack    |        | 3:48:33.0000 |        |
+|           |           | -4d4d-acc |           |        | 00           |        |
+|           |           | 1-72d08b6 |           |        |              |        |
+|           |           | ffd39     |           |        |              |        |
+| pod04-ope | heat-     | 9bb0de7f- | pod04-ope | engine | 2017-12-18T0 | up     |
+| nstack    | engine    | 76fe-4892 | nstack    |        | 3:48:33.0000 |        |
+|           |           | -a654-b25 |           |        | 00           |        |
+|           |           | 8fae71e4f |           |        |              |        |
+| pod04-ope | heat-     | 658b8369  | pod04-ope | engine | 2017-12-18T0 | up     |
+| nstack    | engine    | -fa3f-4bd | nstack    |        | 3:48:33.0000 |        |
+|           |           | c-9422-fc |           |        | 00           |        |
+|           |           | 346518ec6 |           |        |              |        |
+|           |           | c         |           |        |              |        |
++-----------+-----------+-----------+-----------+--------+--------------+--------+
+[root@pod04-openstack ~(keystone_admin)]# cat > os-coa-hot.yml <<EOF
+> heat_template_version: 2015-10-15
+> description: Launch a basic instance with CirrOS image using the
+>              ``m1.tiny`` flavor, ``key1`` key,  and one network.
+> 
+> parameters:
+>   NetID:
+>     type: string
+>     description: Network ID to use for the instance.
+> 
+> resources:
+>   server:
+>     type: OS::Nova::Server
+>     properties:
+>       image: cirros1
+>       flavor: m1.tiny
+>       key_name: key1
+>       networks:
+>       - network: { get_param: NetID }
+> 
+> outputs:
+>   instance_name:
+>     description: Name of the instance.
+>     value: { get_attr: [ server, name ] }
+>   instance_ip:
+>     description: IP address of the instance.
+>     value: { get_attr: [ server, first_address ] }
+> 
+> 
+> EOF
+[root@pod04-openstack ~(keystone_admin)]# openstack network list
++----------------------------------+----------+----------------------------------+
+| ID                               | Name     | Subnets                          |
++----------------------------------+----------+----------------------------------+
+| 19ad6a99-d690-4156-8a9f-         | net-ext  | 117c504c-b98d-41f0-80ea-         |
+| 9a82256f761b                     |          | 1da01d294464                     |
+| 8daa4dc7-1051-427d-              | net-int1 | 82a8ccfd-5116-4ef8-b4e1-69a003ae |
+| a6f0-0f1b14474faa                |          | d7bb                             |
+| c18fa960-204c-46b8-847b-         | net-int0 | 2b3ffbef-ef9c-42ae-              |
+| 720406aba0f6                     |          | b7f7-dbfccb19949f                |
++----------------------------------+----------+----------------------------------+
+[root@pod04-openstack ~(keystone_admin)]# export NET_ID=$(openstack network list | awk '/ net-int1 / { print $2 }')
+[root@pod04-openstack ~(keystone_admin)]# openstack create -t os-coa-hot.yml --parameter "NetID=$NET_ID" stack1
+openstack: 'create' is not an openstack command. See 'openstack --help'.
+Did you mean one of these?
+  aggregate add host
+  aggregate create
+  aggregate delete
+  aggregate list
+  aggregate remove host
+  aggregate set
+  aggregate show
+  aggregate unset
+[root@pod04-openstack ~(keystone_admin)]# openstack stack create -t os-coa-hot.yml --parameter "NetID=$NET_ID" stack1
++---------------------+----------------------------------------------------------+
+| Field               | Value                                                    |
++---------------------+----------------------------------------------------------+
+| id                  | fa5c8aba-2866-422f-af5f-c09c5ca9e07d                     |
+| stack_name          | stack1                                                   |
+| description         | Launch a basic instance with CirrOS image using the      |
+|                     | m1.tiny flavor, key1 key,  and one network.              |
+| creation_time       | 2017-12-18T03:54:03Z                                     |
+| updated_time        | None                                                     |
+| stack_status        | CREATE_IN_PROGRESS                                       |
+| stack_status_reason | Stack CREATE started                                     |
++---------------------+----------------------------------------------------------+
+[root@pod04-openstack ~(keystone_admin)]# openstack stack list
++----------------+------------+----------------+------------------+--------------+
+| ID             | Stack Name | Stack Status   | Creation Time    | Updated Time |
++----------------+------------+----------------+------------------+--------------+
+| fa5c8aba-2866  | stack1     | CREATE_COMPLET | 2017-12-18T03:54 | None         |
+| -422f-af5f-    |            | E              | :03Z             |              |
+| c09c5ca9e07d   |            |                |                  |              |
+| c5ae1231-9980- | stack0     | CREATE_COMPLET | 2017-12-18T03:47 | None         |
+| 4293-b5e7-c285 |            | E              | :32Z             |              |
+| 2970fb9c       |            |                |                  |              |
++----------------+------------+----------------+------------------+--------------+
+[root@pod04-openstack ~(keystone_admin)]# openstack stack output show --all stack1
++---------------+--------------------------------------------------+
+| Field         | Value                                            |
++---------------+--------------------------------------------------+
+| instance_name | {                                                |
+|               |   "output_value": "stack1-server-74das4popxk2",  |
+|               |   "output_key": "instance_name",                 |
+|               |   "description": "Name of the instance."         |
+|               | }                                                |
+| instance_ip   | {                                                |
+|               |   "output_value": "192.168.41.110",              |
+|               |   "output_key": "instance_ip",                   |
+|               |   "description": "IP address of the instance."   |
+|               | }                                                |
++---------------+--------------------------------------------------+
+[root@pod04-openstack ~(keystone_admin)]# openstack server list
++------------------+------------------+--------+--------------------+------------+
+| ID               | Name             | Status | Networks           | Image Name |
++------------------+------------------+--------+--------------------+------------+
+| 30ec74f5-bf5e-4a | stack1-server-   | ACTIVE | net-int1=192.168.4 | cirros1    |
+| 00-baf3-e09090b8 | 74das4popxk2     |        | 1.110              |            |
+| 6d03             |                  |        |                    |            |
+| e916cc89-0947    | stack0-server-   | ACTIVE | net-int0=192.168.4 | cirros1    |
+| -482b-b14d-      | y5xpj5k5whvo     |        | 0.104              |            |
+| ee8acb7c564f     |                  |        |                    |            |
+| b8527e12-e90b-   | instance1        | ACTIVE | net-int1=192.168.4 | cirros1    |
+| 487e-968d-       |                  |        | 1.106,             |            |
+| c25ffd9517a8     |                  |        | 10.41.41.109       |            |
+| 13b119b6-bad4-46 | instance0        | ACTIVE | net-int0=192.168.4 |            |
+| d7-b324-88e5043e |                  |        | 0.109,             |            |
+| dbe2             |                  |        | 10.41.41.103       |            |
++------------------+------------------+--------+--------------------+------------+
+[root@pod04-openstack ~(keystone_admin)]# openstack stack delete --yes stack1
+[root@pod04-openstack ~(keystone_admin)]# openstack server list
++------------------+------------------+--------+--------------------+------------+
+| ID               | Name             | Status | Networks           | Image Name |
++------------------+------------------+--------+--------------------+------------+
+| e916cc89-0947    | stack0-server-   | ACTIVE | net-int0=192.168.4 | cirros1    |
+| -482b-b14d-      | y5xpj5k5whvo     |        | 0.104              |            |
+| ee8acb7c564f     |                  |        |                    |            |
+| b8527e12-e90b-   | instance1        | ACTIVE | net-int1=192.168.4 | cirros1    |
+| 487e-968d-       |                  |        | 1.106,             |            |
+| c25ffd9517a8     |                  |        | 10.41.41.109       |            |
+| 13b119b6-bad4-46 | instance0        | ACTIVE | net-int0=192.168.4 |            |
+| d7-b324-88e5043e |                  |        | 0.109,             |            |
+| dbe2             |                  |        | 10.41.41.103       |            |
++------------------+------------------+--------+--------------------+------------+
+[root@pod04-openstack ~(keystone_admin)]# 
+
+
 

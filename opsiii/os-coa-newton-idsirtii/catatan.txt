@@ -1,0 +1,37 @@
+LAB VM:
+lab1.btech.id	pod 1-12
+lab2.btech.id	pod 13-20
+
+Cara akses VM menggunakan SSH (Mac / Linux):
+ssh -l root lab1.btech.id -p2201 s/d 2212
+ssh -l root lab2.btech.id -p2213 s/d 2220
+
+Cara akses VM menggunakan putty (Windows):
+1. Download putty client
+2. Buka putty dan pilih connection type SSH
+3. Isi hostname dengan lab1.btech.id / lab2.btech.id
+4. Isikan port dengan awalan 22 dilanjutkan dengan nomor pod.
+Contoh : port 2205 (Untun mengakses pod 5 di lab1)
+5. Open
+
+Command vi:
+i - Masuk ke mode edit
+Esc - Kembali ke mode command
+:q! - Keluar tanpa menyimpan
+:wq - Menyimpan file dan keluar
+yy - copy 1 baris
+3yy - copy 3 baris
+p - paste di bawah kursor
+u - undo
+:redo - redo
+dd - cut/delete 1 baris
+3dd - cut/delete 3 baris
+/[KATA] - mencari kata
+n - mencari kata berikutnya
+:%s/[KATALAMA]/[KATABARU]/g
+
+
+ip address - menampilkan alamat ip
+ip route - menampilkan gateway
+cat /etc/resolv.conf - menampikan DNS resolver
+ping [ALAMATIP/DOMAIN] - cek konektivitas

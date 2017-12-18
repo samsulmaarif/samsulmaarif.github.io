@@ -1,0 +1,216 @@
+#########################################
+##### Lab 2 - Cinder, Swift, Manila #####
+#########################################
+
+### Cinder Volume Attachment BUI ###
+
+Project > Compute > Volume
+Click Create Volume
+Volume Name: vol0
+Volume Source: No Source, Empty Volume
+Type: iscsi
+Size: 2 GB
+
+vol0 > Click Drop Down Menu > Click Manage Attachments
+Attach to instance: instance0
+
+### Verfikasi and Mount Volume Attachment###
+#Akses Console / SSH ke instance0 dari pod0X-openstack
+ssh -l cirros 10.X1.X1.YYY password: cubswin:)
+sudo -i
+fdisk -l
+fdisk /dev/vdb
+---------------------
+device | size | type 
+---------------------
+vdb1 	1G 	83 (Linux)
+
+mkfs.ext3 /dev/vdb1
+fdisk -l
+mkdir /mnt/vol0
+mount /dev/vdb1 /mnt/vol0/
+df -h
+echo "hello" > /mnt/vol0/hello0.txt
+ls -la /mnt/vol0/
+
+### Cinder Volume Attachment CLI ###
+source /root/keystonerc_admin
+openstack volume list
+openstack volume create --type iscsi --size 1 vol1
+openstack volume list
+openstack server add volume instance1 vol1
+openstack volume list
+openstack server remove volume instance1 vol1
+openstack volume list
+openstack volume delete vol1
+openstack volume list
+
+
+### Cinder Volume Source Image BUI ###
+#Hapus semua instances berjalan (instance0 dan instance1)
+Project > Compute > Volume
+Click Create Volume
+Volume Name: vol2
+Volume Source: Image
+Use image as a source: cirros0
+Type: iscsi
+Size: 1 GB
+
+Click Launch as Instance
+Instance Name: instance2
+Flavor: m1.tiny
+Instance Boot Source: Boot from volume
+Volume: vol2
+Key Pair: key0
+Security Group: sg0
+Selected networks: net-int0
+
+
+### Cinder Volume Source Image CLI ###
+openstack volume create --image cirros1 --type iscsi --size 1 vol3
+neutron net-list
+openstack server create --flavor m1.tiny --volume vol3 --key-name key1 --security-group sg1 --nic net-id=[copy paste ID net-int1] instance3
+openstack server list
+
+
+#################
+##### Swift #####
+#################
+
+
+##### Swift Upload Object BUI #####
+Project > Object Store > Containers
+Container
+Container Name: container1
+Container Access: Public
+
+Upload file
+File Browse: [upload file.txt]
+Upload File
+
+##### Swift Upload Object CLI #####
+swift stat
+echo "test-file1" > file1.txt
+echo "test-file2" > file2.txt
+echo "test-file3" > file3.txt
+swift upload container-test1 file1.txt
+swift upload container-test1 file2.txt
+swift upload container-test1 file3.txt
+swift list
+swift list container-test1
+rm -rf file*.txt
+
+###Download file from Swift container to pod0X-openstack###
+swift download container-test1 file3.txt
+ls
+cat file1.txt
+
+#Verifikasi replikasi di 3 disk
+grep -rnw "test-file" /srv/node/device*
+
+
+### Akses Client Swift Cyberduck ###
+
+#0. Download installer Cyberduck dan Profile OpenStack Swift Keystone HTTP
+Download Cyberduck: https://cyberduck.io/
+Download Profile Swift Keystone HTTP: https://svn.cyberduck.io/trunk/profiles/Openstack%20Swift%20(Keystone%20HTTP).cyberduckprofile
+
+#1. Instal dan jalankan Cyberduck di Windows/MacOSX. Double click Profile OpenStack Swift Keystone HTTP yang sudah di Unduh
+
+#2. Buat koneksi OpenStack Swift Keystone HTTP
+Connection Profile: OpenStack Swift Keystone HTTP
+Server: 10.X0.X0.10
+Port:35357 atau 5000
+Tenant ID:Access Key: admin:admin
+Secret Key: rahasia
+
+
+
+##### Manila #####
+#0. Hapus semua instance dan volume yang ada
+openstack server list
+openstack server delete instance0
+openstack server delete instance1
+openstack server delete instance2
+openstack server delete instance3
+openstack volume list
+openstack volume delete vol0
+openstack volume delete vol1
+openstack volume delete vol2
+openstack volume delete vol3
+
+
+##### Launch Instance BUI #####
+#0. Instal paket openstack-manila-ui
+yum -y install openstack-manila-ui
+systemctl restart httpd memcached
+
+#1. Verifikasi service manila di cli
+manila service-list
+
+#2. Verifikasi flavor m1.manila
+openstack flavor list
+openstack flavor show m1.manila
+
+#3. Membuat instance manila client
+Project > Compute > Instance
+Click Launch Instance
+Instance Name: ins-manila
+Flavor: m1.manila
+Create New Volume: No
+Instance Boot Source: Boot from image
+Image Name: manila-service-image
+Key Pair: key0
+Security Group: sg0
+Selected networks: net-int0
+
+#4. Create share type
+Admin > System > Shares
+Share Types
+Name: generic_share_type
+Driver handles share servers: True
+Check Public
+Create
+
+#5. Create share network
+Project > Compute > Shares
+Share Networks > Create Share Network
+Name: manila-net-share
+Neutron Net: net-int0
+Neutron Subnet: subnet-int0
+Create
+
+#6 Floating IP address
+Click Associate Floating IP
+Click + Alocate Floating IP
+Pool: net-ext
+Click Allocate IP
+IP Address: 10.X1.X1.1YY
+Port to be associated: instance0 192.168.X0.1YY
+
+
+#7. Create NFS share
+Project > Compute > Shares
+Shares > Create Share
+Share Name: share0
+Share Protocols: NFS
+Size (GiB): 1
+Share Type: generic_share_type
+Availability Zone: nova
+Share Network: manila-net-share
+
+#8. Configure access
+Project > Compute > Shares 
+share0 > Click Manage Rules
+Add rule
+Access Level: read-write
+Access To: 192.168.20.107
+Add
+
+#9. Mount di inst-manila
+ssh -l ubuntu 10.X1.X1.YYY [Password: ubuntu]
+sudo mkdir /test_manila
+sudo mount -t nfs 10.254.0.Y:/shares/share-XXXXX /test_manila
+cp /etc/passwd /test_manila
+ls -lh /test_manila
+df -H
