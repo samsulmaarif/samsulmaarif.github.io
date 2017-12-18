@@ -1,0 +1,487 @@
+Danu - Guru SMK - Bogor
+Rizky - Lulusan UIN - Bogor
+Ernawan - Guru SMK - Sragen
+Samsul - Syadmin - Malang
+Ragil - Engineer - Cimahi
+Randy - Mahasiswa - Padang
+Wahyu - Mahasiswa - Padang
+Henry - Karyawan - Bali
+Opie - Guru SMK - Sukabumi
+Andy - Engineer - Tangsel
+Eko - Guru SMK - Depok
+Budi - KMK Labs - Jakarta
+Moko - KK Labs - Bogor
+
+==========================================
+
+Networking -> Utian
+Linux -> Utian
+OpenStack -> Dendy
+SDN -> Zufar
+Docker -> Ary
+Kubernetes -> Ary
+Ceph -> Utian
+
+
+#######################
+###### Networking #####
+#######################
+
+OSI Model
+VLAN & Trunking & InterVLAN Routing
+Etherchannel
+IPv4 Address
+DHCP & DNS
+Packet Filter
+NAT
+
+
+################
+##### VLAN #####
+################
+
+##### MLS1 & MLS2 #####
+
+MLS1(config)# ip routing
+MLS1(config)# int g0/1
+MLS1(config-if)# switchport trunk encapsulation dot1q
+MLS1(config-if)# switchport mode trunk
+
+MLS1(config)# vlan 10
+MLS1(config-vlan)# name VLAN-IT
+MLS1(config)# vlan 20
+MLS1(config-vlan)# name VLAN-SALES
+
+MLS1(config)# int range f0/1-2
+MLS1(config-if-range)# switchport mode access
+MLS1(config-if-range)# switchport access vlan 10
+
+MLS1(config)# int range f0/3-4
+MLS1(config-if-range)# switchport mode access
+MLS1(config-if-range)# switchport access vlan 20
+
+MLS1# show vlan
+MLS1# show int g0/1 switchport
+
+##### MLS3 #####
+
+MLS1(config)# ip routing
+MLS1(config)# int range g0/1-2
+MLS1(config-if)# switchport trunk encapsulation dot1q
+MLS1(config-if)# switchport mode trunk
+
+MLS1(config)# vlan 10
+MLS1(config-vlan)# name VLAN-IT
+MLS1(config)# vlan 20
+MLS1(config-vlan)# name VLAN-SALES
+
+MLS1(config)# int vlan 10
+MLS1(config-if)# ip add 10.10.10.1 255.255.255.0
+MLS1(config-if)# no shut
+
+MLS1(config)# int vlan 20
+MLS1(config-if)# ip add 10.20.20.1 255.255.255.0
+MLS1(config-if)# no shut
+
+
+########################
+##### Etherchannel #####
+########################
+
+Static: On
+Dynamic: LACP (Active/Passive)
+
+S1/2(config)# int range g0/1-2
+S1/2(config-if-range)# channel-group 1 mode active
+
+S1/2(config)# int po1
+S1/2(config-if)# no switchport
+S1/2(config-if)# ip add 10.10.10.X 255.255.255.0
+
+S1/2# show etherchannel summary
+S1/2# ping 10.10.10.X
+
+
+########################
+##### IPv4 Address #####
+########################
+
+
+XXXXXXXX.XXXXXXXX.XXXXXXXX.XXXXXXXX
+
+00000000 -> 0
+11111111 -> 255
+
+A 0XXXXXXX			11111111.00000000.00000000.00000000
+  00000001 - 01111110 255.0.0.0 -> Netmask
+  1 - 126				/8 -> Prefix Length
+
+10.9.8.7 255.0.0.0
+10.9.8.7/8
+
+B 10XXXXXX				/16
+  10000000 - 10111111
+  128 - 191
+
+C 110XXXXX				/24
+  11000000 - 11011111
+  192 - 223
+
+127 -> loopback
+
+
+172.16.17.18/16
+
+202.1.1.1/24
+
+
+
+					128	64	32	16	8	4	2	1
+
+17.8.19.45/20	11111111.11111111.11110000.00000000
+
+NA -> 17.8.16.0/20
+HA -> 17.8.16.1/20
+.....
+HA -> 17.8.31.254/20
+BA -> 17.8.31.255/20
+
+NA -> 17.8.32.0/20
+
+
+10.0.0.0/8
+172.16.0.0/12
+192.168.0.0/16
+
+
+#########################
+##### Packet Filter #####
+#########################
+
+
+##### ACL Deny ICMP #####
+
+S(config)# ip routing
+
+S(config)# int f0/1
+S(config-if)# no switchport
+S(config-if)# ip add 10.1.1.1 255.255.255.0
+S(config)# int g0/1
+S(config-if)# no switchport
+S(config-if)# ip add 10.2.2.1 255.255.255.0
+
+S(config)# ip access-list extended DENY_ICMP
+S(config-nacl-ext)# deny icmp any host 10.2.2.10
+S(config-nacl-ext)# permit ip any host 10.2.2.10
+
+S# sh access-list
+
+S(config)# int g0/1
+S(config-if)# ip access-group DENY_ICMP out
+
+S# sh ip int g0/1
+
+S(config)# int f0/1
+S(config-if)# no ip add
+S(config-if)# switchport
+
+S(config)# int vlan 1
+S(config-if)# ip add 10.1.1.1 255.255.255.0
+S(config-if)# no shut
+
+###################################
+##### NAT Overload/Masquerade #####
+###################################
+
+
+S(config)# ip access-list standard IP_PRIVATE
+S(config-nacl-std)# permit 10.1.1.0 0.0.0.255
+
+S(config)# ip nat inside source list IP_PRIVATE interface g0/1 overload
+
+S(config)# int vlan 1
+S(config-if)#  ip nat inside
+
+S(config)# int g0/1
+S(config-if)#  ip nat outside
+
+ping dari PC ke server 10.2.2.10
+
+S# show ip nat translation
+
+
+######################
+##### NAT Static #####
+######################
+
+
+S(config)# ip nat inside source static 10.1.1.100 10.2.2.100 
+
+S# show ip nat translation
+
+Test ping dari Server Luar ke Server Dalam
+ping 10.2.2.100
+
+
+
+##### Instal Linux Server #####
+
+~ Pilih ISO minimalis
+~ Partisi disk sesuai rekomendasi distro atau security
+~ Partisi disk minimal: / dan swap
+
+
+
+##### Konfigurasi Network #####
+
+nmtui
+
+eth0: 10.X0.X0.10/24 gw & dns: 10.X0.X0.1
+eth1: 10.X1.X1.10/24
+
+ip link -> verifikasi link fisik
+ip add -> verifikasi ip
+ip route -> verifikasi route
+cat /etc/resolv.conf -> verifikasi dns resolver
+
+ping yahoo.com
+
+
+
+### Tambahkan route di Laptop Windows ###
+
+Buka CMD sebagai Administrator
+route add 10.X0.X0.0 mask 255.255.255.0 10.1.1.250
+ping 10.X0.X0.10
+
+
+### Tambahkan route di Laptop Linux ###
+
+ip route add 10.X0.X0.0/24 via 10.1.1.250
+ip route
+
+
+##### Basic Commands #####
+
+pwd - print working directory
+cd - change directory
+mkdir - make directory
+touch - membuat file kosong
+ls - menampilkan isi direktori
+rmdir - menghapus direktori kosong
+rm - menghapus file/dir
+cp - menyalin file/dir
+mv - memindahkan file/dir
+file - menampilkan tipe file
+whereis - menampilkan lokasi file
+which - menampilkan file executable
+cat - menampilkan isi file teks
+head - menampilkan 10 baris pertama file teks
+tail - menampilkan 10 baris terakhir file teks
+
+
+##### Vim Text Editor #####
+
+i -> Mode edit
+Esc -> Mode command
+:wq -> Simpan dan keluar
+:q! -> Keluar tanpa menyimpan
+yy -> copy 1 baris di posisi kursor
+3yy -> copy 3 baris mulai dari posisi kursor ke bawah
+dd -> cut/hapus 1 baris di posisi kursor
+3dd -> cut/hapus 3 baris mulai dari posisi kursor ke bawah
+p -> paste di bawah kursor
+u -> undo
+:redo -> redo
+/[STRING] -> mencari string
+n -> pindah kursor ke string yang dicari berikutnya
+:%s/[STRING1]/[STRING2]/g -> mengganti string1 menjadi string2
+:%s/[STRING1]/[STRING2]/gc -> mengganti string1 menjadi string2 interaktif
+:1 -> pindah kursor ke baris 1 file
+G -> pindah kursor ke akhir baris file
+
+
+##### Package Management #####
+
+Konfigurasi repo: /etc/yum.repos.d/*
+
+yum repolist -> menampilkan daftar repo aktif
+yum search release -> mencari paket release
+yum install epel-release  -> instal paket epel
+yum upgrade -> upgrade paket
+yum erase [nama paket] -> uninstall paket
+yum list -> menampilkan daftar paket
+yum info [nama paket] -> menampilkan informasi paket
+yum group list -> menampilkan daftar group
+yum group install "GNOME Desktop" -> instal paket grup GNOME Desktop
+
+
+##### Disk Management #####
+
+### Mount Partisi XFS ###
+
+1. Membuat partisi tipe 83
+fdisk -l -> menampilkan skema partisi harddisk
+fdisk /dev/vda -> edit partisi vda
+partprobe -> memaksa kernel membaca skema partisi baru
+
+2. Membuat filesystem partisi
+mkfs.xfs -L DATA /dev/vda5 -> format filesystem pada partisi vda5
+
+blkid /dev/vda5 -> menampilkan informasi filesystem vda5
+
+3. Membuat mount point
+mkdir /mnt/data -> membuat direktori mount point
+
+4. Edit /etc/fstab
+/etc/fstab -> file konfigurasi mounting
+UUID=63d0b9f6-87fd-4310-834b-02f4297ffa53 /mnt/data xfs defaults 0 0
+
+5. Mount dan verifikasi
+mount -a
+mount | grep data
+df -h | grep data
+
+
+### Swap ###
+
+1. Membuat partisi tipe 82
+fdisk /dev/vda
+
+partprobe
+
+2. Format filesystem swap
+mkswap -L SWAP /dev/vda6
+
+blkid /dev/vda6
+
+3. Edit file /etc/fstab
+UUID=fb42c3ff-822f-48ae-a246-613cc4024f59 swap swap defaults 0 0
+
+4. Aktifkan swap
+swapon /dev/vda6
+
+5. Verifikasi
+swapon -s
+
+
+### LVM ###
+
+1. Membuat 3 partisi 10GB tipe 8e
+
+fdisk /dev/vda
+
+partprobe
+fdisk -l
+
+2. Install paket lvm2
+yum -y install lvm2
+
+3. Membuat Physical Volume (PV)
+pvcreate /dev/vda7 /dev/vda8
+pvs
+
+4. Membuat Volume Group (VG)
+vgcreate vg0 /dev/vda7 /dev/vda8
+vgs
+
+5. Membuat Logical Volume (LV)
+lvcreate -L 15G -n lv0 vg0
+lvs
+
+6. Format filesystem
+mkfs.xfs -L VG0 /dev/vg0/lv0
+
+7. Mount
+mkdir /mnt/lv0
+mount /dev/vg0/lv0 /mnt/lv0
+df -h | grep lv0
+
+
+### Extend LV ###
+
+1. Membuat PV
+pvcreate /dev/vda9
+pvs
+
+2. Extend VG
+vgextend vg0 /dev/vda9
+vgs
+
+3. Extend LV
+lvextend -l +100%FREE /dev/vg0/lv0
+lvs
+vgs
+
+4. Resise filesystem
+df -h | grep lv0
+xfs_growfs /mnt/lv0
+df -h | grep lv0
+
+
+### Service NTP ###
+
+1. Instal paket chrony
+yum -y install chrony
+
+2. Edit file konfigurasi chrony (opsional)
+vim /etc/chrony.conf
+.....
+server 0.id.pool.ntp.org iburst
+server 1.id.pool.ntp.org iburst
+server 2.id.pool.ntp.org iburst
+server 3.id.pool.ntp.org iburst
+
+3. Aktifkan/restart service chronyd
+systemctl start chronyd
+systemctl enable chronyd
+systemctl status chronyd
+
+4. Verifikasi chrony
+chronyc sources -v
+timedatectl
+ 
+
+##### Screen #####
+
+### Membuat screen baru ###
+screen -R latihan1
+
+while :; do echo "halo"; sleep 5; done
+
+### Keluar screen tanpa mematikan screen ###
+Ctrl+A D
+
+### Menampilkan daftar screen ###
+screen -ls
+
+### Kembali ke screen aktif ###
+screen -r latihan1
+
+
+##### Service Management #####
+
+### Urutan Boot CentOS ###
+1. BIOS -> Cek hardware
+2. GRUB -> Boot loader
+3. Kernel diload
+4. Systemd -> Manajemen service
+
+ps -aux | head -2
+
+Informasi service:
+loaded -> file kkonfigurasi service sudah diload
+active (running) -> service berjalan terus menerus (daemon)
+active (exited) -> service berjalan sekali
+active (waiting) -> service menunggu konfigurasi selesai diproses
+inactive -> service tidak aktif
+enabled -> service dijalankan saat proses boot
+disabled -> service tidak dijalankan saat proses boot
+
+systemctl -t service -> menampilkan semua unit service aktif
+
+
+
+
+https://go.btech.id/live-training/os-idsirtii/
+

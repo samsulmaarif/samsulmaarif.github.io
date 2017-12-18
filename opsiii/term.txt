@@ -1,0 +1,883 @@
+[root@centos7 latihan]# fdisk -l
+
+Disk /dev/vda: 107.4 GB, 107374182400 bytes, 209715200 sectors
+Units = sectors of 1 * 512 = 512 bytes
+Sector size (logical/physical): 512 bytes / 512 bytes
+Ukuran I/O (minimal/optimal): 512 bytes / 512 bytes
+Disk label type: dos
+Identifikasi disk: 0x000aa808
+
+Perangkat Boot      Awal          Akhir    Blocks   Id  System
+/dev/vda1   *        2048    33556479    16777216   83  Linux
+/dev/vda2        33556480    41945087     4194304   82  Linux swap / Solaris
+[root@centos7 latihan]# df -h
+Sistem Berkas  Besar   Isi  Sisa Isi% Dipasang di
+/dev/vda1        16G  1,2G   15G   8% /
+devtmpfs        3,9G     0  3,9G   0% /dev
+tmpfs           3,9G     0  3,9G   0% /dev/shm
+tmpfs           3,9G  8,4M  3,9G   1% /run
+tmpfs           3,9G     0  3,9G   0% /sys/fs/cgroup
+tmpfs           799M     0  799M   0% /run/user/0
+[root@centos7 latihan]# fdisk /dev/vda
+Welcome to fdisk (util-linux 2.23.2).
+
+Changes will remain in memory only, until you decide to write them.
+Be careful before using the write command.
+
+
+Perintah (m untuk bantuan): m
+Aksi perintah
+   a   toggle a bootable flag
+   b   edit bsd disklabel
+   c   toggle the dos compatibility flag
+   d   delete a partition
+   g   create a new empty GPT partition table
+   G   create an IRIX (SGI) partition table
+   l   list known partition types
+   m   print this menu
+   n   add a new partition
+   o   create a new empty DOS partition table
+   p   print the partition table
+   q   quit without saving changes
+   s   create a new empty Sun disklabel
+   t   change a partition's system id
+   u   change display/entry units
+   v   verify the partition table
+   w   write table to disk and exit
+   x   extra functionality (experts only)
+
+Perintah (m untuk bantuan): n
+Partition type:
+   p   primary (2 primary, 0 extended, 2 free)
+   e   extended
+Select (default p): e
+Nomor partisi (3,4, default 3): 
+Pertama sector (41945088-209715199, default 41945088): 
+Menggunakan nilai default 41945088
+Terakhir sector, +sectors atau +size{K,M,G} (41945088-209715199, default 209715199): 
+Menggunakan nilai default 209715199
+Partition 3 of type Extended and of size 80 GiB is set
+
+Perintah (m untuk bantuan): p
+
+Disk /dev/vda: 107.4 GB, 107374182400 bytes, 209715200 sectors
+Units = sectors of 1 * 512 = 512 bytes
+Sector size (logical/physical): 512 bytes / 512 bytes
+Ukuran I/O (minimal/optimal): 512 bytes / 512 bytes
+Disk label type: dos
+Identifikasi disk: 0x000aa808
+
+Perangkat Boot      Awal          Akhir    Blocks   Id  System
+/dev/vda1   *        2048    33556479    16777216   83  Linux
+/dev/vda2        33556480    41945087     4194304   82  Linux swap / Solaris
+/dev/vda3        41945088   209715199    83885056    5  Extended
+
+Perintah (m untuk bantuan): n
+Partition type:
+   p   primary (2 primary, 1 extended, 1 free)
+   l   logical (numbered from 5)
+Select (default p): l
+Adding logical partition 5
+Pertama sector (41947136-209715199, default 41947136): 
+Menggunakan nilai default 41947136
+Terakhir sector, +sectors atau +size{K,M,G} (41947136-209715199, default 209715199): +10G
+Partition 5 of type Linux and of size 10 GiB is set
+
+Perintah (m untuk bantuan): p
+
+Disk /dev/vda: 107.4 GB, 107374182400 bytes, 209715200 sectors
+Units = sectors of 1 * 512 = 512 bytes
+Sector size (logical/physical): 512 bytes / 512 bytes
+Ukuran I/O (minimal/optimal): 512 bytes / 512 bytes
+Disk label type: dos
+Identifikasi disk: 0x000aa808
+
+Perangkat Boot      Awal          Akhir    Blocks   Id  System
+/dev/vda1   *        2048    33556479    16777216   83  Linux
+/dev/vda2        33556480    41945087     4194304   82  Linux swap / Solaris
+/dev/vda3        41945088   209715199    83885056    5  Extended
+/dev/vda5        41947136    62918655    10485760   83  Linux
+
+Perintah (m untuk bantuan): w
+Tabel partisi telah diubah!
+
+Memanggil ioctl() untuk membaca kembali tabel partisi.
+
+WARNING: Re-reading the partition table failed with error 16: Perangkat atau sumber daya sibuk.
+The kernel still uses the old table. The new table will be used at
+the next reboot or after you run partprobe(8) or kpartx(8)
+Sinkronisasi disks.
+[root@centos7 latihan]# partprobe
+Warning: Tidak dapat membuka /dev/sr0 dengan mode read-write (Sistem berkas baca-saja). /dev/sr0 telah dibuka read-only.
+[root@centos7 latihan]# fdisk -l
+
+Disk /dev/vda: 107.4 GB, 107374182400 bytes, 209715200 sectors
+Units = sectors of 1 * 512 = 512 bytes
+Sector size (logical/physical): 512 bytes / 512 bytes
+Ukuran I/O (minimal/optimal): 512 bytes / 512 bytes
+Disk label type: dos
+Identifikasi disk: 0x000aa808
+
+Perangkat Boot      Awal          Akhir    Blocks   Id  System
+/dev/vda1   *        2048    33556479    16777216   83  Linux
+/dev/vda2        33556480    41945087     4194304   82  Linux swap / Solaris
+/dev/vda3        41945088   209715199    83885056    5  Extended
+/dev/vda5        41947136    62918655    10485760   83  Linux
+[root@centos7 latihan]# mkfs.xfs -L DATA /dev/vda5
+meta-data=/dev/vda5              isize=512    agcount=4, agsize=655360 blks
+         =                       sectsz=512   attr=2, projid32bit=1
+         =                       crc=1        finobt=0, sparse=0
+data     =                       bsize=4096   blocks=2621440, imaxpct=25
+         =                       sunit=0      swidth=0 blks
+naming   =version 2              bsize=4096   ascii-ci=0 ftype=1
+log      =internal log           bsize=4096   blocks=2560, version=2
+         =                       sectsz=512   sunit=0 blks, lazy-count=1
+realtime =none                   extsz=4096   blocks=0, rtextents=0
+[root@centos7 latihan]# df -h
+Sistem Berkas  Besar   Isi  Sisa Isi% Dipasang di
+/dev/vda1        16G  1,2G   15G   8% /
+devtmpfs        3,9G     0  3,9G   0% /dev
+tmpfs           3,9G     0  3,9G   0% /dev/shm
+tmpfs           3,9G  8,4M  3,9G   1% /run
+tmpfs           3,9G     0  3,9G   0% /sys/fs/cgroup
+tmpfs           799M     0  799M   0% /run/user/0
+/dev/vda5        10G   33M   10G   1% /mnt/data
+[root@centos7 latihan]# fdisk /dev/vda
+Welcome to fdisk (util-linux 2.23.2).
+
+Changes will remain in memory only, until you decide to write them.
+Be careful before using the write command.
+
+
+Perintah (m untuk bantuan): m
+Aksi perintah
+   a   toggle a bootable flag
+   b   edit bsd disklabel
+   c   toggle the dos compatibility flag
+   d   delete a partition
+   g   create a new empty GPT partition table
+   G   create an IRIX (SGI) partition table
+   l   list known partition types
+   m   print this menu
+   n   add a new partition
+   o   create a new empty DOS partition table
+   p   print the partition table
+   q   quit without saving changes
+   s   create a new empty Sun disklabel
+   t   change a partition's system id
+   u   change display/entry units
+   v   verify the partition table
+   w   write table to disk and exit
+   x   extra functionality (experts only)
+
+Perintah (m untuk bantuan): p
+
+Disk /dev/vda: 107.4 GB, 107374182400 bytes, 209715200 sectors
+Units = sectors of 1 * 512 = 512 bytes
+Sector size (logical/physical): 512 bytes / 512 bytes
+Ukuran I/O (minimal/optimal): 512 bytes / 512 bytes
+Disk label type: dos
+Identifikasi disk: 0x000aa808
+
+Perangkat Boot      Awal          Akhir    Blocks   Id  System
+/dev/vda1   *        2048    33556479    16777216   83  Linux
+/dev/vda2        33556480    41945087     4194304   82  Linux swap / Solaris
+/dev/vda3        41945088   209715199    83885056    5  Extended
+/dev/vda5        41947136    62918655    10485760   83  Linux
+
+Perintah (m untuk bantuan): n
+Partition type:
+   p   primary (2 primary, 1 extended, 1 free)
+   l   logical (numbered from 5)
+Select (default p): l
+Adding logical partition 6
+Pertama sector (62920704-209715199, default 62920704): 
+Menggunakan nilai default 62920704
+Terakhir sector, +sectors atau +size{K,M,G} (62920704-209715199, default 209715199): +10G
+Partition 6 of type Linux and of size 10 GiB is set
+
+Perintah (m untuk bantuan): p
+
+Disk /dev/vda: 107.4 GB, 107374182400 bytes, 209715200 sectors
+Units = sectors of 1 * 512 = 512 bytes
+Sector size (logical/physical): 512 bytes / 512 bytes
+Ukuran I/O (minimal/optimal): 512 bytes / 512 bytes
+Disk label type: dos
+Identifikasi disk: 0x000aa808
+
+Perangkat Boot      Awal          Akhir    Blocks   Id  System
+/dev/vda1   *        2048    33556479    16777216   83  Linux
+/dev/vda2        33556480    41945087     4194304   82  Linux swap / Solaris
+/dev/vda3        41945088   209715199    83885056    5  Extended
+/dev/vda5        41947136    62918655    10485760   83  Linux
+/dev/vda6        62920704    83892223    10485760   83  Linux
+
+Perintah (m untuk bantuan): m
+Aksi perintah
+   a   toggle a bootable flag
+   b   edit bsd disklabel
+   c   toggle the dos compatibility flag
+   d   delete a partition
+   g   create a new empty GPT partition table
+   G   create an IRIX (SGI) partition table
+   l   list known partition types
+   m   print this menu
+   n   add a new partition
+   o   create a new empty DOS partition table
+   p   print the partition table
+   q   quit without saving changes
+   s   create a new empty Sun disklabel
+   t   change a partition's system id
+   u   change display/entry units
+   v   verify the partition table
+   w   write table to disk and exit
+   x   extra functionality (experts only)
+
+Perintah (m untuk bantuan): t
+Nomor partisi (1-3,5,6, default 6): 6
+Hex code (type L to list all codes): l
+
+ 0  Kosong          24  NEC DOS         81  Minix / old Lin bf  Solaris        
+ 1  FAT12           27  Hidden NTFS Win 82  Linux swap / So c1  DRDOS/sec (FAT-
+ 2  XENIX root      39  Plan 9          83  Linux           c4  DRDOS/sec (FAT-
+ 3  XENIX usr       3c  PartitionMagic  84  OS/2 hidded C:  c6  DRDOS/sec (FAT-
+ 4  FAT16 <32M      40  Venix 80286     85  Linux extended  c7  Syrinx         
+ 5  Extended        41  PPC PReP Boot   86  NTFS volume set da  Non-FS data    
+ 6  FAT16           42  SFS             87  NTFS volume set db  CP/M / CTOS / .
+ 7  HPFS/NTFS/exFAT 4d  QNX4.x          88  Linux plaintext de  Dell Utility   
+ 8  AIX             4e  QNX4.x 2nd part 8e  Linux LVM       df  BootIt         
+ 9  AIX bootable    4f  QNX4.x 3rd part 93  Amoeba          e1  DOS access     
+ a  OS/2 Boot Manag 50  OnTrack DM      94  Amoeba BBT      e3  DOS R/O        
+ b  W95 FAT32       51  OnTrack DM6 Aux 9f  BSD/OS          e4  SpeedStor      
+ c  W95 FAT32 (LBA) 52  CP/M            a0  IBM Thinkpad hi eb  BeOS fs        
+ e  W95 FAT16 (LBA) 53  OnTrack DM6 Aux a5  FreeBSD         ee  GPT            
+ f  W95 Ext'd (LBA) 54  OnTrackDM6      a6  OpenBSD         ef  EFI (FAT-12/16/
+10  OPUS            55  EZ-Drive        a7  NextSTEP        f0  Linux/PA-RISC b
+11  FAT12 Tersembun 56  Golden Bow      a8  Darwin UFS      f1  SpeedStor      
+12  Compaq diagnost 5c  Priam Edisk     a9  NetBSD          f4  SpeedStor      
+14  FAT16 Tersembun 61  SpeedStor       ab  Darwin boot     f2  DOS secondary  
+16  FAT16 Tersembun 63  GNU HURD ataus  af  HFS / HPF+      fb  VMware VMFS    
+17  HPFS/NTFS Terse 64  Novell Netware  b7  BSDI fs         fc  VMware VMKCORE 
+18  AST SmartSleep  65  Novell Netware  b8  BSDI swap       fd  Linux raid auto
+1b  W95 FAT32 Terse 70  DiskSecure Mult bb  Boot Wizard hid fe  LANstep        
+1c  W95 FAT32 (LBA) 75  PC/IX           be  Solaris boot    ff  BBT            
+1e  W95 FAT16 (LBA) 80  Old Minix      
+Hex code (type L to list all codes): 82
+Changed type of partition 'Linux' to 'Linux swap / Solaris'
+
+Perintah (m untuk bantuan): p
+
+Disk /dev/vda: 107.4 GB, 107374182400 bytes, 209715200 sectors
+Units = sectors of 1 * 512 = 512 bytes
+Sector size (logical/physical): 512 bytes / 512 bytes
+Ukuran I/O (minimal/optimal): 512 bytes / 512 bytes
+Disk label type: dos
+Identifikasi disk: 0x000aa808
+
+Perangkat Boot      Awal          Akhir    Blocks   Id  System
+/dev/vda1   *        2048    33556479    16777216   83  Linux
+/dev/vda2        33556480    41945087     4194304   82  Linux swap / Solaris
+/dev/vda3        41945088   209715199    83885056    5  Extended
+/dev/vda5        41947136    62918655    10485760   83  Linux
+/dev/vda6        62920704    83892223    10485760   82  Linux swap / Solaris
+
+Perintah (m untuk bantuan): w
+Tabel partisi telah diubah!
+
+Memanggil ioctl() untuk membaca kembali tabel partisi.
+
+WARNING: Re-reading the partition table failed with error 16: Perangkat atau sumber daya sibuk.
+The kernel still uses the old table. The new table will be used at
+the next reboot or after you run partprobe(8) or kpartx(8)
+Sinkronisasi disks.
+[root@centos7 latihan]# partprobe
+Warning: Tidak dapat membuka /dev/sr0 dengan mode read-write (Sistem berkas baca-saja). /dev/sr0 telah dibuka read-only.
+[root@centos7 latihan]# 
+[root@centos7 latihan]# mkswap -L SWAP /dev/vda6
+Membuat swapspace versi 1, ukuran = 10485756 kiB
+LABEL=SWAP, UUID=1c309e6a-762b-4bbd-a3f0-13cca9cf941f
+[root@centos7 latihan]# vim /etc/fstab
+[root@centos7 latihan]# cat /etc/fstab 
+
+#
+# /etc/fstab
+# Created by anaconda on Sun Dec 17 10:00:18 2017
+#
+# Accessible filesystems, by reference, are maintained under '/dev/disk'
+# See man pages fstab(5), findfs(8), mount(8) and/or blkid(8) for more info
+#
+UUID=12d1cb8c-e16d-483b-b5f2-4f3e8d417a0e /                       xfs     defaults        0 0
+UUID=494a909b-7e66-47cc-bee8-e7e79dc8b246 swap                    swap    defaults        0 0
+UUID=f35f4626-f020-4815-8120-d925f2eeed27 /mnt/data	xfs	defaults 	0 0
+UUID=1c309e6a-762b-4bbd-a3f0-13cca9cf941f swap swap defaults 0 0
+[root@centos7 latihan]# swapon -s
+Filename				Type		Size	Used	Priority
+/dev/vda2                              	partition	4194300	0	-1
+[root@centos7 latihan]# swapon /dev/vda6
+[root@centos7 latihan]# swapon -s
+Filename				Type		Size	Used	Priority
+/dev/vda2                              	partition	4194300	0	-1
+/dev/vda6                              	partition	10485756	0	-2
+[root@centos7 latihan]# df -h
+Sistem Berkas  Besar   Isi  Sisa Isi% Dipasang di
+/dev/vda1        16G  1,2G   15G   8% /
+devtmpfs        3,9G     0  3,9G   0% /dev
+tmpfs           3,9G     0  3,9G   0% /dev/shm
+tmpfs           3,9G  8,4M  3,9G   1% /run
+tmpfs           3,9G     0  3,9G   0% /sys/fs/cgroup
+tmpfs           799M     0  799M   0% /run/user/0
+/dev/vda5        10G   33M   10G   1% /mnt/data
+[root@centos7 latihan]# fdisk -l
+
+Disk /dev/vda: 107.4 GB, 107374182400 bytes, 209715200 sectors
+Units = sectors of 1 * 512 = 512 bytes
+Sector size (logical/physical): 512 bytes / 512 bytes
+Ukuran I/O (minimal/optimal): 512 bytes / 512 bytes
+Disk label type: dos
+Identifikasi disk: 0x000aa808
+
+Perangkat Boot      Awal          Akhir    Blocks   Id  System
+/dev/vda1   *        2048    33556479    16777216   83  Linux
+/dev/vda2        33556480    41945087     4194304   82  Linux swap / Solaris
+/dev/vda3        41945088   209715199    83885056    5  Extended
+/dev/vda5        41947136    62918655    10485760   83  Linux
+/dev/vda6        62920704    83892223    10485760   82  Linux swap / Solaris
+[root@centos7 latihan]# fdisk /dev/vda
+Welcome to fdisk (util-linux 2.23.2).
+
+Changes will remain in memory only, until you decide to write them.
+Be careful before using the write command.
+
+
+Perintah (m untuk bantuan): n
+Partition type:
+   p   primary (2 primary, 1 extended, 1 free)
+   l   logical (numbered from 5)
+Select (default p): l
+Adding logical partition 7
+Pertama sector (83894272-209715199, default 83894272): 
+Menggunakan nilai default 83894272
+Terakhir sector, +sectors atau +size{K,M,G} (83894272-209715199, default 209715199): 10G
+Nilai diluar dari jangkauan.
+Terakhir sector, +sectors atau +size{K,M,G} (83894272-209715199, default 209715199): +10G
+Partition 7 of type Linux and of size 10 GiB is set
+
+Perintah (m untuk bantuan): n
+Partition type:
+   p   primary (2 primary, 1 extended, 1 free)
+   l   logical (numbered from 5)
+Select (default p): l
+Adding logical partition 8
+Pertama sector (104867840-209715199, default 104867840): 
+Menggunakan nilai default 104867840
+Terakhir sector, +sectors atau +size{K,M,G} (104867840-209715199, default 209715199): +10G
+Partition 8 of type Linux and of size 10 GiB is set
+
+Perintah (m untuk bantuan): n
+Partition type:
+   p   primary (2 primary, 1 extended, 1 free)
+   l   logical (numbered from 5)
+Select (default p): l
+Adding logical partition 9
+Pertama sector (125841408-209715199, default 125841408): 
+Menggunakan nilai default 125841408
+Terakhir sector, +sectors atau +size{K,M,G} (125841408-209715199, default 209715199): +10G
+Partition 9 of type Linux and of size 10 GiB is set
+
+Perintah (m untuk bantuan): p
+
+Disk /dev/vda: 107.4 GB, 107374182400 bytes, 209715200 sectors
+Units = sectors of 1 * 512 = 512 bytes
+Sector size (logical/physical): 512 bytes / 512 bytes
+Ukuran I/O (minimal/optimal): 512 bytes / 512 bytes
+Disk label type: dos
+Identifikasi disk: 0x000aa808
+
+Perangkat Boot      Awal          Akhir    Blocks   Id  System
+/dev/vda1   *        2048    33556479    16777216   83  Linux
+/dev/vda2        33556480    41945087     4194304   82  Linux swap / Solaris
+/dev/vda3        41945088   209715199    83885056    5  Extended
+/dev/vda5        41947136    62918655    10485760   83  Linux
+/dev/vda6        62920704    83892223    10485760   82  Linux swap / Solaris
+/dev/vda7        83894272   104865791    10485760   83  Linux
+/dev/vda8       104867840   125839359    10485760   83  Linux
+/dev/vda9       125841408   146812927    10485760   83  Linux
+
+Perintah (m untuk bantuan): l
+
+ 0  Kosong          24  NEC DOS         81  Minix / old Lin bf  Solaris        
+ 1  FAT12           27  Hidden NTFS Win 82  Linux swap / So c1  DRDOS/sec (FAT-
+ 2  XENIX root      39  Plan 9          83  Linux           c4  DRDOS/sec (FAT-
+ 3  XENIX usr       3c  PartitionMagic  84  OS/2 hidded C:  c6  DRDOS/sec (FAT-
+ 4  FAT16 <32M      40  Venix 80286     85  Linux extended  c7  Syrinx         
+ 5  Extended        41  PPC PReP Boot   86  NTFS volume set da  Non-FS data    
+ 6  FAT16           42  SFS             87  NTFS volume set db  CP/M / CTOS / .
+ 7  HPFS/NTFS/exFAT 4d  QNX4.x          88  Linux plaintext de  Dell Utility   
+ 8  AIX             4e  QNX4.x 2nd part 8e  Linux LVM       df  BootIt         
+ 9  AIX bootable    4f  QNX4.x 3rd part 93  Amoeba          e1  DOS access     
+ a  OS/2 Boot Manag 50  OnTrack DM      94  Amoeba BBT      e3  DOS R/O        
+ b  W95 FAT32       51  OnTrack DM6 Aux 9f  BSD/OS          e4  SpeedStor      
+ c  W95 FAT32 (LBA) 52  CP/M            a0  IBM Thinkpad hi eb  BeOS fs        
+ e  W95 FAT16 (LBA) 53  OnTrack DM6 Aux a5  FreeBSD         ee  GPT            
+ f  W95 Ext'd (LBA) 54  OnTrackDM6      a6  OpenBSD         ef  EFI (FAT-12/16/
+10  OPUS            55  EZ-Drive        a7  NextSTEP        f0  Linux/PA-RISC b
+11  FAT12 Tersembun 56  Golden Bow      a8  Darwin UFS      f1  SpeedStor      
+12  Compaq diagnost 5c  Priam Edisk     a9  NetBSD          f4  SpeedStor      
+14  FAT16 Tersembun 61  SpeedStor       ab  Darwin boot     f2  DOS secondary  
+16  FAT16 Tersembun 63  GNU HURD ataus  af  HFS / HPF+      fb  VMware VMFS    
+17  HPFS/NTFS Terse 64  Novell Netware  b7  BSDI fs         fc  VMware VMKCORE 
+18  AST SmartSleep  65  Novell Netware  b8  BSDI swap       fd  Linux raid auto
+1b  W95 FAT32 Terse 70  DiskSecure Mult bb  Boot Wizard hid fe  LANstep        
+1c  W95 FAT32 (LBA) 75  PC/IX           be  Solaris boot    ff  BBT            
+1e  W95 FAT16 (LBA) 80  Old Minix      
+
+Perintah (m untuk bantuan): t
+Nomor partisi (1-3,5-9, default 9): p
+Nomor partisi (1-3,5-9, default 9): 7-9
+Nomor partisi (1-3,5-9, default 9): 7-9
+Nomor partisi (1-3,5-9, default 9): 7
+Hex code (type L to list all codes): 8e
+Changed type of partition 'Linux' to 'Linux LVM'
+
+Perintah (m untuk bantuan): t
+Nomor partisi (1-3,5-9, default 9): 7-9
+Nomor partisi (1-3,5-9, default 9): 8
+Hex code (type L to list all codes): 8e
+Changed type of partition 'Linux' to 'Linux LVM'
+
+Perintah (m untuk bantuan): t
+Nomor partisi (1-3,5-9, default 9): 9
+Hex code (type L to list all codes): 8e
+Changed type of partition 'Linux' to 'Linux LVM'
+
+Perintah (m untuk bantuan): p
+
+Disk /dev/vda: 107.4 GB, 107374182400 bytes, 209715200 sectors
+Units = sectors of 1 * 512 = 512 bytes
+Sector size (logical/physical): 512 bytes / 512 bytes
+Ukuran I/O (minimal/optimal): 512 bytes / 512 bytes
+Disk label type: dos
+Identifikasi disk: 0x000aa808
+
+Perangkat Boot      Awal          Akhir    Blocks   Id  System
+/dev/vda1   *        2048    33556479    16777216   83  Linux
+/dev/vda2        33556480    41945087     4194304   82  Linux swap / Solaris
+/dev/vda3        41945088   209715199    83885056    5  Extended
+/dev/vda5        41947136    62918655    10485760   83  Linux
+/dev/vda6        62920704    83892223    10485760   82  Linux swap / Solaris
+/dev/vda7        83894272   104865791    10485760   8e  Linux LVM
+/dev/vda8       104867840   125839359    10485760   8e  Linux LVM
+/dev/vda9       125841408   146812927    10485760   8e  Linux LVM
+
+Perintah (m untuk bantuan): w
+Tabel partisi telah diubah!
+
+Memanggil ioctl() untuk membaca kembali tabel partisi.
+
+WARNING: Re-reading the partition table failed with error 16: Perangkat atau sumber daya sibuk.
+The kernel still uses the old table. The new table will be used at
+the next reboot or after you run partprobe(8) or kpartx(8)
+Sinkronisasi disks.
+[root@centos7 latihan]# partprobe
+Warning: Tidak dapat membuka /dev/sr0 dengan mode read-write (Sistem berkas baca-saja). /dev/sr0 telah dibuka read-only.
+[root@centos7 latihan]# fdisk -l
+
+Disk /dev/vda: 107.4 GB, 107374182400 bytes, 209715200 sectors
+Units = sectors of 1 * 512 = 512 bytes
+Sector size (logical/physical): 512 bytes / 512 bytes
+Ukuran I/O (minimal/optimal): 512 bytes / 512 bytes
+Disk label type: dos
+Identifikasi disk: 0x000aa808
+
+Perangkat Boot      Awal          Akhir    Blocks   Id  System
+/dev/vda1   *        2048    33556479    16777216   83  Linux
+/dev/vda2        33556480    41945087     4194304   82  Linux swap / Solaris
+/dev/vda3        41945088   209715199    83885056    5  Extended
+/dev/vda5        41947136    62918655    10485760   83  Linux
+/dev/vda6        62920704    83892223    10485760   82  Linux swap / Solaris
+/dev/vda7        83894272   104865791    10485760   8e  Linux LVM
+/dev/vda8       104867840   125839359    10485760   8e  Linux LVM
+/dev/vda9       125841408   146812927    10485760   8e  Linux LVM
+[root@centos7 latihan]# yum install lvm2
+Plugins yang dimuat:fastestmirror
+Loading mirror speeds from cached hostfile
+ * base: centos.biz.net.id
+ * extras: repo.apiknet.co.id
+ * updates: centos.biz.net.id
+Sedang menyelesaikan Ketergantungan
+--> Menjalankan pemeriksaan transaksi
+---> Paket lvm2.x86_64 7:2.02.171-8.el7 akan terpasang
+--> Mem-proses ketergantungan: lvm2-libs = 7:2.02.171-8.el7 untuk paket: 7:lvm2-2.02.171-8.el7.x86_64
+--> Mem-proses ketergantungan: device-mapper-persistent-data >= 0.7.0-0.1.rc6 untuk paket: 7:lvm2-2.02.171-8.el7.x86_64
+--> Mem-proses ketergantungan: liblvm2app.so.2.2(Base)(64bit) untuk paket: 7:lvm2-2.02.171-8.el7.x86_64
+--> Mem-proses ketergantungan: libdevmapper-event.so.1.02(Base)(64bit) untuk paket: 7:lvm2-2.02.171-8.el7.x86_64
+--> Mem-proses ketergantungan: liblvm2app.so.2.2()(64bit) untuk paket: 7:lvm2-2.02.171-8.el7.x86_64
+--> Mem-proses ketergantungan: libdevmapper-event.so.1.02()(64bit) untuk paket: 7:lvm2-2.02.171-8.el7.x86_64
+--> Menjalankan pemeriksaan transaksi
+---> Paket device-mapper-event-libs.x86_64 7:1.02.140-8.el7 akan terpasang
+---> Paket device-mapper-persistent-data.x86_64 0:0.7.0-0.1.rc6.el7 akan terpasang
+--> Mem-proses ketergantungan: libaio.so.1(LIBAIO_0.4)(64bit) untuk paket: device-mapper-persistent-data-0.7.0-0.1.rc6.el7.x86_64
+--> Mem-proses ketergantungan: libaio.so.1(LIBAIO_0.1)(64bit) untuk paket: device-mapper-persistent-data-0.7.0-0.1.rc6.el7.x86_64
+--> Mem-proses ketergantungan: libaio.so.1()(64bit) untuk paket: device-mapper-persistent-data-0.7.0-0.1.rc6.el7.x86_64
+---> Paket lvm2-libs.x86_64 7:2.02.171-8.el7 akan terpasang
+--> Mem-proses ketergantungan: device-mapper-event = 7:1.02.140-8.el7 untuk paket: 7:lvm2-libs-2.02.171-8.el7.x86_64
+--> Menjalankan pemeriksaan transaksi
+---> Paket device-mapper-event.x86_64 7:1.02.140-8.el7 akan terpasang
+---> Paket libaio.x86_64 0:0.3.109-13.el7 akan terpasang
+--> Resolusi ketergantungan telah diselesaikan
+
+Ketergantungan-ketergantungan telah Diselesaikan
+
+========================================================================================================================================================================
+ Package                                                Arst                            Versi                                       Repositori                    Ukuran
+========================================================================================================================================================================
+Memasang:
+ lvm2                                                   x86_64                          7:2.02.171-8.el7                            base                          1.3 M
+Melakukan instalasi untuk ketergantungan:
+ device-mapper-event                                    x86_64                          7:1.02.140-8.el7                            base                          180 k
+ device-mapper-event-libs                               x86_64                          7:1.02.140-8.el7                            base                          179 k
+ device-mapper-persistent-data                          x86_64                          0.7.0-0.1.rc6.el7                           base                          400 k
+ libaio                                                 x86_64                          0.3.109-13.el7                              base                           24 k
+ lvm2-libs                                              x86_64                          7:2.02.171-8.el7                            base                          1.0 M
+
+Ringkasan Transaksi
+========================================================================================================================================================================
+Instal  1 Paket (+5 Paket-paket yang tergantung)
+
+Total ukuran pengunduhan: 3.1 M
+Ukuran terpasang: 7.7 M
+Is this ok [y/d/N]: y
+Downloading packages:
+(1/6): libaio-0.3.109-13.el7.x86_64.rpm                                                                                                          |  24 kB  00:00:00     
+(2/6): device-mapper-event-libs-1.02.140-8.el7.x86_64.rpm                                                                                        | 179 kB  00:00:00     
+(3/6): device-mapper-event-1.02.140-8.el7.x86_64.rpm                                                                                             | 180 kB  00:00:00     
+(4/6): device-mapper-persistent-data-0.7.0-0.1.rc6.el7.x86_64.rpm                                                                                | 400 kB  00:00:00     
+(5/6): lvm2-libs-2.02.171-8.el7.x86_64.rpm                                                                                                       | 1.0 MB  00:00:00     
+(6/6): lvm2-2.02.171-8.el7.x86_64.rpm                                                                                                            | 1.3 MB  00:00:00     
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Total                                                                                                                                   4.3 MB/s | 3.1 MB  00:00:00     
+Running transaction check
+Running transaction test
+Transaction test succeeded
+Running transaction
+  Memasang           : 7:device-mapper-event-libs-1.02.140-8.el7.x86_64                                                                                             1/6 
+  Memasang           : 7:device-mapper-event-1.02.140-8.el7.x86_64                                                                                                  2/6 
+  Memasang           : 7:lvm2-libs-2.02.171-8.el7.x86_64                                                                                                            3/6 
+  Memasang           : libaio-0.3.109-13.el7.x86_64                                                                                                                 4/6 
+  Memasang           : device-mapper-persistent-data-0.7.0-0.1.rc6.el7.x86_64                                                                                       5/6 
+  Memasang           : 7:lvm2-2.02.171-8.el7.x86_64                                                                                                                 6/6 
+Created symlink from /etc/systemd/system/sysinit.target.wants/lvm2-lvmpolld.socket to /usr/lib/systemd/system/lvm2-lvmpolld.socket.
+  Melakukan verifikasi: 7:device-mapper-event-libs-1.02.140-8.el7.x86_64                                                                                            1/6 
+  Melakukan verifikasi: 7:device-mapper-event-1.02.140-8.el7.x86_64                                                                                                 2/6 
+  Melakukan verifikasi: 7:lvm2-libs-2.02.171-8.el7.x86_64                                                                                                           3/6 
+  Melakukan verifikasi: 7:lvm2-2.02.171-8.el7.x86_64                                                                                                                4/6 
+  Melakukan verifikasi: device-mapper-persistent-data-0.7.0-0.1.rc6.el7.x86_64                                                                                      5/6 
+  Melakukan verifikasi: libaio-0.3.109-13.el7.x86_64                                                                                                                6/6 
+
+Terpasang:
+  lvm2.x86_64 7:2.02.171-8.el7                                                                                                                                          
+
+Ketergantungan Dipasang:
+  device-mapper-event.x86_64 7:1.02.140-8.el7      device-mapper-event-libs.x86_64 7:1.02.140-8.el7      device-mapper-persistent-data.x86_64 0:0.7.0-0.1.rc6.el7     
+  libaio.x86_64 0:0.3.109-13.el7                   lvm2-libs.x86_64 7:2.02.171-8.el7                    
+
+Selesai!
+[root@centos7 latihan]# pvcreate /dev/vda7 /dev/vda8
+  Physical volume "/dev/vda7" successfully created.
+  Physical volume "/dev/vda8" successfully created.
+[root@centos7 latihan]# pvs
+  PV         VG Fmt  Attr PSize  PFree 
+  /dev/vda7     lvm2 ---  10,00g 10,00g
+  /dev/vda8     lvm2 ---  10,00g 10,00g
+[root@centos7 latihan]# vgcreate vg0 /dev/vda7 /dev/vda8
+  Volume group "vg0" successfully created
+[root@centos7 latihan]# vgs
+  VG  #PV #LV #SN Attr   VSize  VFree 
+  vg0   2   0   0 wz--n- 19,99g 19,99g
+[root@centos7 latihan]# 
+[root@centos7 latihan]# lvcreate -L 15G -n lv0 vg0
+  Logical volume "lv0" created.
+[root@centos7 latihan]# lvs
+  LV   VG  Attr       LSize  Pool Origin Data%  Meta%  Move Log Cpy%Sync Convert
+  lv0  vg0 -wi-a----- 15,00g                                                    
+[root@centos7 latihan]# 
+[root@centos7 latihan]# mkfs.xfs -L VG0 /dev/vg0/lv0
+meta-data=/dev/vg0/lv0           isize=512    agcount=4, agsize=983040 blks
+         =                       sectsz=512   attr=2, projid32bit=1
+         =                       crc=1        finobt=0, sparse=0
+data     =                       bsize=4096   blocks=3932160, imaxpct=25
+         =                       sunit=0      swidth=0 blks
+naming   =version 2              bsize=4096   ascii-ci=0 ftype=1
+log      =internal log           bsize=4096   blocks=2560, version=2
+         =                       sectsz=512   sunit=0 blks, lazy-count=1
+realtime =none                   extsz=4096   blocks=0, rtextents=0
+[root@centos7 latihan]# 
+[root@centos7 latihan]# mkdir /mnt/lv0
+[root@centos7 latihan]# mount /dev/vg0/lv0 /mnt/lv0
+[root@centos7 latihan]# df -h | grep lv0
+/dev/mapper/vg0-lv0   15G   33M   15G   1% /mnt/lv0
+[root@centos7 latihan]# 
+[root@centos7 latihan]# 
+[root@centos7 latihan]# df -h
+Sistem Berkas       Besar   Isi  Sisa Isi% Dipasang di
+/dev/vda1             16G  1,2G   15G   8% /
+devtmpfs             3,9G     0  3,9G   0% /dev
+tmpfs                3,9G     0  3,9G   0% /dev/shm
+tmpfs                3,9G  8,4M  3,9G   1% /run
+tmpfs                3,9G     0  3,9G   0% /sys/fs/cgroup
+tmpfs                799M     0  799M   0% /run/user/0
+/dev/vda5             10G   33M   10G   1% /mnt/data
+/dev/mapper/vg0-lv0   15G   33M   15G   1% /mnt/lv0
+[root@centos7 latihan]# pvcreate /dev/vda9
+  Physical volume "/dev/vda9" successfully created.
+[root@centos7 latihan]# pvs
+  PV         VG  Fmt  Attr PSize   PFree 
+  /dev/vda7  vg0 lvm2 a--  <10,00g     0 
+  /dev/vda8  vg0 lvm2 a--  <10,00g  4,99g
+  /dev/vda9      lvm2 ---   10,00g 10,00g
+[root@centos7 latihan]# vgextend vg0 /dev/vda9
+  Volume group "vg0" successfully extended
+[root@centos7 latihan]# pvs
+  PV         VG  Fmt  Attr PSize   PFree  
+  /dev/vda7  vg0 lvm2 a--  <10,00g      0 
+  /dev/vda8  vg0 lvm2 a--  <10,00g   4,99g
+  /dev/vda9  vg0 lvm2 a--  <10,00g <10,00g
+[root@centos7 latihan]# vgs
+  VG  #PV #LV #SN Attr   VSize   VFree  
+  vg0   3   1   0 wz--n- <29,99g <14,99g
+[root@centos7 latihan]# lvextend -l +100%FREE /dev/vg0/lv0
+  Size of logical volume vg0/lv0 changed from 15,00 GiB (3840 extents) to <29,99 GiB (7677 extents).
+  Logical volume vg0/lv0 successfully resized.
+[root@centos7 latihan]# lvs
+  LV   VG  Attr       LSize   Pool Origin Data%  Meta%  Move Log Cpy%Sync Convert
+  lv0  vg0 -wi-ao---- <29,99g                                                    
+[root@centos7 latihan]# vgs
+  VG  #PV #LV #SN Attr   VSize   VFree
+  vg0   3   1   0 wz--n- <29,99g    0 
+[root@centos7 latihan]# df -h
+Sistem Berkas       Besar   Isi  Sisa Isi% Dipasang di
+/dev/vda1             16G  1,2G   15G   8% /
+devtmpfs             3,9G     0  3,9G   0% /dev
+tmpfs                3,9G     0  3,9G   0% /dev/shm
+tmpfs                3,9G  8,4M  3,9G   1% /run
+tmpfs                3,9G     0  3,9G   0% /sys/fs/cgroup
+tmpfs                799M     0  799M   0% /run/user/0
+/dev/vda5             10G   33M   10G   1% /mnt/data
+/dev/mapper/vg0-lv0   15G   33M   15G   1% /mnt/lv0
+[root@centos7 latihan]# xfs_growfs /mnt/lv0
+meta-data=/dev/mapper/vg0-lv0    isize=512    agcount=4, agsize=983040 blks
+         =                       sectsz=512   attr=2, projid32bit=1
+         =                       crc=1        finobt=0 spinodes=0
+data     =                       bsize=4096   blocks=3932160, imaxpct=25
+         =                       sunit=0      swidth=0 blks
+naming   =version 2              bsize=4096   ascii-ci=0 ftype=1
+log      =internal               bsize=4096   blocks=2560, version=2
+         =                       sectsz=512   sunit=0 blks, lazy-count=1
+realtime =none                   extsz=4096   blocks=0, rtextents=0
+data blocks changed from 3932160 to 7861248
+[root@centos7 latihan]# df -h | grep lv0
+/dev/mapper/vg0-lv0   30G   33M   30G   1% /mnt/lv0
+[root@centos7 latihan]# yum -y install chrony
+Plugins yang dimuat:fastestmirror
+Loading mirror speeds from cached hostfile
+ * base: centos.biz.net.id
+ * extras: repo.apiknet.co.id
+ * updates: centos.biz.net.id
+Sedang menyelesaikan Ketergantungan
+--> Menjalankan pemeriksaan transaksi
+---> Paket chrony.x86_64 0:3.1-2.el7.centos akan terpasang
+--> Mem-proses ketergantungan: libseccomp.so.2()(64bit) untuk paket: chrony-3.1-2.el7.centos.x86_64
+--> Menjalankan pemeriksaan transaksi
+---> Paket libseccomp.x86_64 0:2.3.1-3.el7 akan terpasang
+--> Resolusi ketergantungan telah diselesaikan
+
+Ketergantungan-ketergantungan telah Diselesaikan
+
+==================================================================================
+ Package            Arst           Versi                       Repositori   Ukuran
+==================================================================================
+Memasang:
+ chrony             x86_64         3.1-2.el7.centos            base         237 k
+Melakukan instalasi untuk ketergantungan:
+ libseccomp         x86_64         2.3.1-3.el7                 base          56 k
+
+Ringkasan Transaksi
+==================================================================================
+Instal  1 Paket (+1 Paket-paket yang tergantung)
+
+Total ukuran pengunduhan: 293 k
+Ukuran terpasang: 761 k
+Downloading packages:
+(1/2): libseccomp-2.3.1-3.el7.x86_64.rpm                   |  56 kB  00:00:00     
+(2/2): chrony-3.1-2.el7.centos.x86_64.rpm                  | 237 kB  00:00:01     
+----------------------------------------------------------------------------------
+Total                                                175 kB/s | 293 kB  00:01     
+Running transaction check
+Running transaction test
+Transaction test succeeded
+Running transaction
+  Memasang           : libseccomp-2.3.1-3.el7.x86_64                          1/2 
+  Memasang           : chrony-3.1-2.el7.centos.x86_64                         2/2 
+  Melakukan verifikasi: libseccomp-2.3.1-3.el7.x86_64                         1/2 
+  Melakukan verifikasi: chrony-3.1-2.el7.centos.x86_64                        2/2 
+
+Terpasang:
+  chrony.x86_64 0:3.1-2.el7.centos                                                
+
+Ketergantungan Dipasang:
+  libseccomp.x86_64 0:2.3.1-3.el7                                                 
+
+Selesai!
+[root@centos7 latihan]# vim /etc/chrony.conf 
+[root@centos7 latihan]# systemctl start chronyd
+[root@centos7 latihan]# sustemctl enable chronyd
+-bash: sustemctl: perintah tidak ditemukan
+[root@centos7 latihan]# systemctl enable chronyd
+[root@centos7 latihan]# systemctl status chronyd
+● chronyd.service - NTP client/server
+   Loaded: loaded (/usr/lib/systemd/system/chronyd.service; enabled; vendor preset: enabled)
+   Active: active (running) since Min 2017-12-17 13:24:00 WIB; 1min 18s left
+     Docs: man:chronyd(8)
+           man:chrony.conf(5)
+ Main PID: 10171 (chronyd)
+   CGroup: /system.slice/chronyd.service
+           └─10171 /usr/sbin/chronyd
+
+Des 17 13:24:00 centos7.samsul.id systemd[1]: Starting NTP client/server...
+Des 17 13:24:00 centos7.samsul.id chronyd[10171]: chronyd version 3.1 starting...)
+Des 17 13:24:00 centos7.samsul.id systemd[1]: Started NTP client/server.
+Des 17 13:24:13 centos7.samsul.id chronyd[10171]: Selected source 203.160.128.132
+Des 17 13:24:13 centos7.samsul.id chronyd[10171]: System clock wrong by -101.3...d
+Des 17 13:22:31 centos7.samsul.id chronyd[10171]: System clock was stepped by ...s
+Hint: Some lines were ellipsized, use -l to show in full.
+[root@centos7 latihan]# chrony sources -v
+-bash: chrony: perintah tidak ditemukan
+[root@centos7 latihan]# chronyc sources -v
+210 Number of sources = 8
+
+  .-- Source mode  '^' = server, '=' = peer, '#' = local clock.
+ / .- Source state '*' = current synced, '+' = combined , '-' = not combined,
+| /   '?' = unreachable, 'x' = time may be in error, '~' = time too variable.
+||                                                 .- xxxx [ yyyy ] +/- zzzz
+||      Reachability register (octal) -.           |  xxxx = adjusted offset,
+||      Log2(Polling interval) --.      |          |  yyyy = measured offset,
+||                                \     |          |  zzzz = estimated error.
+||                                 |    |           \
+MS Name/IP address         Stratum Poll Reach LastRx Last sample               
+===============================================================================
+^- mirror2.wowrack.co.id         2   6    17    35  +6457us[+5867us] +/-   86ms
+^- ip-243-189.datautama.net>     2   6    17    35   +766us[ +177us] +/-   58ms
+^- tiesto.cyberplus.net.id       3   6    17    36  +8135us[+7546us] +/-  189ms
+^- ns1.matrixglobal.net.id       2   6    17    35  +5420us[+4830us] +/-   49ms
+^- ubuntu.ubaya.ac.id            2   6    35    33  +5076us[+5076us] +/-   22ms
+^* dns2.cloud.lipi.go.id         2   6    17    35    -59us[ -648us] +/- 7090us
+^- 13.31.89.203.in-addr.arpa     2   6    17    35  -1897us[-2486us] +/-   40ms
+^- 203.114.225.252               2   6    17    36  -8274us[-8864us] +/-   95ms
+[root@centos7 latihan]# chronyc sources -v
+210 Number of sources = 8
+
+  .-- Source mode  '^' = server, '=' = peer, '#' = local clock.
+ / .- Source state '*' = current synced, '+' = combined , '-' = not combined,
+| /   '?' = unreachable, 'x' = time may be in error, '~' = time too variable.
+||                                                 .- xxxx [ yyyy ] +/- zzzz
+||      Reachability register (octal) -.           |  xxxx = adjusted offset,
+||      Log2(Polling interval) --.      |          |  yyyy = measured offset,
+||                                \     |          |  zzzz = estimated error.
+||                                 |    |           \
+MS Name/IP address         Stratum Poll Reach LastRx Last sample               
+===============================================================================
+^- mirror2.wowrack.co.id         2   6    37    10  +6132us[+2884us] +/-   87ms
+^- ip-243-189.datautama.net>     2   6    37     8  +1432us[-1904us] +/-   60ms
+^- tiesto.cyberplus.net.id       3   6    37     9  +8093us[+4783us] +/-  190ms
+^- ns1.matrixglobal.net.id       2   6    37     9  +5532us[+2212us] +/-   51ms
+^- ubuntu.ubaya.ac.id            2   6    73     7  +5465us[+5465us] +/-   22ms
+^* dns2.cloud.lipi.go.id         2   6    37     8  -6484ns[-3352us] +/- 7551us
+^- 13.31.89.203.in-addr.arpa     2   6    37     8  -1415us[-1415us] +/-   40ms
+^- 203.114.225.252               2   6    37    10  -9655us[  -13ms] +/-   96ms
+[root@centos7 latihan]# chronyc sources -v
+210 Number of sources = 8
+
+  .-- Source mode  '^' = server, '=' = peer, '#' = local clock.
+ / .- Source state '*' = current synced, '+' = combined , '-' = not combined,
+| /   '?' = unreachable, 'x' = time may be in error, '~' = time too variable.
+||                                                 .- xxxx [ yyyy ] +/- zzzz
+||      Reachability register (octal) -.           |  xxxx = adjusted offset,
+||      Log2(Polling interval) --.      |          |  yyyy = measured offset,
+||                                \     |          |  zzzz = estimated error.
+||                                 |    |           \
+MS Name/IP address         Stratum Poll Reach LastRx Last sample               
+===============================================================================
+^- mirror2.wowrack.co.id         2   6    37    16  +6132us[+2884us] +/-   87ms
+^- ip-243-189.datautama.net>     2   6    37    14  +1432us[-1904us] +/-   60ms
+^- tiesto.cyberplus.net.id       3   6    37    15  +8093us[+4783us] +/-  190ms
+^- ns1.matrixglobal.net.id       2   6    37    15  +5532us[+2212us] +/-   51ms
+^- ubuntu.ubaya.ac.id            2   6    73    13  +5465us[+5465us] +/-   22ms
+^* dns2.cloud.lipi.go.id         2   6    37    14  -6484ns[-3352us] +/- 7556us
+^- 13.31.89.203.in-addr.arpa     2   6    37    14  -1415us[-1415us] +/-   40ms
+^- 203.114.225.252               2   6    37    16  -9655us[  -13ms] +/-   96ms
+[root@centos7 latihan]# timedatectl
+      Local time: Min 2017-12-17 13:26:44 WIB
+  Universal time: Min 2017-12-17 06:26:44 UTC
+        RTC time: Min 2017-12-17 06:28:25
+       Time zone: Asia/Jakarta (WIB, +0700)
+     NTP enabled: yes
+NTP synchronized: yes
+ RTC in local TZ: no
+      DST active: n/a
+[root@centos7 latihan]# 
+[root@centos7 latihan]# yum -y install screen
+Plugins yang dimuat:fastestmirror
+Loading mirror speeds from cached hostfile
+ * base: centos.biz.net.id
+ * extras: repo.apiknet.co.id
+ * updates: centos.biz.net.id
+Sedang menyelesaikan Ketergantungan
+--> Menjalankan pemeriksaan transaksi
+---> Paket screen.x86_64 0:4.1.0-0.23.20120314git3c2946.el7_2 akan terpasang
+--> Resolusi ketergantungan telah diselesaikan
+
+Ketergantungan-ketergantungan telah Diselesaikan
+
+========================================================================================================================================================================
+ Package                          Arst                             Versi                                                           Repositori                     Ukuran
+========================================================================================================================================================================
+Memasang:
+ screen                           x86_64                           4.1.0-0.23.20120314git3c2946.el7_2                              base                           552 k
+
+Ringkasan Transaksi
+========================================================================================================================================================================
+Instal  1 Paket
+
+Total ukuran pengunduhan: 552 k
+Ukuran terpasang: 914 k
+Downloading packages:
+screen-4.1.0-0.23.20120314git3c2946.el7_2.x86_64.rpm                                                                                             | 552 kB  00:00:00     
+Running transaction check
+Running transaction test
+Transaction test succeeded
+Running transaction
+  Memasang           : screen-4.1.0-0.23.20120314git3c2946.el7_2.x86_64                                                                                             1/1 
+  Melakukan verifikasi: screen-4.1.0-0.23.20120314git3c2946.el7_2.x86_64                                                                                            1/1 
+
+Terpasang:
+  screen.x86_64 0:4.1.0-0.23.20120314git3c2946.el7_2                                                                                                                    
+
+Selesai!
+[root@centos7 latihan]# screen -R latihan1
+[detached from 10223.latihan1]
+[root@centos7 latihan]# exit
+logout
+Connection to 10.40.40.10 closed.
+samsul@studio:~$ ssh root@10.40.40.10
+Last login: Sun Dec 17 10:33:13 2017 from 10.1.1.107
+[root@centos7 ~]# screen -ls
+There is a screen on:
+	10223.latihan1	(Detached)
+1 Socket in /var/run/screen/S-root.
+
+[root@centos7 ~]# screen -r latihan1
+[screen is terminating]
+[root@centos7 ~]# screen -ls
+No Sockets found in /var/run/screen/S-root.
+
+
