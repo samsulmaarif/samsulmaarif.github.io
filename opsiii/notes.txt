@@ -11,6 +11,8 @@ Andy - Engineer - Tangsel
 Eko - Guru SMK - Depok
 Budi - KMK Labs - Jakarta
 Moko - KK Labs - Bogor
+Hamdi - Tim TI Kementerian - Jakarta
+
 
 ==========================================
 
@@ -250,6 +252,9 @@ ping yahoo.com
 
 ### Tambahkan route di Laptop Windows ###
 
+pod1-6 di popper 10.1.1.250. 
+pod9-12 di horton 10.1.1.249
+
 Buka CMD sebagai Administrator
 route add 10.X0.X0.0 mask 255.255.255.0 10.1.1.250
 ping 10.X0.X0.10
@@ -258,7 +263,7 @@ ping 10.X0.X0.10
 ### Tambahkan route di Laptop Linux ###
 
 ip route add 10.X0.X0.0/24 via 10.1.1.250
-ip route
+ip route add 10.X1.X1.0/24 via 10.1.1.250
 
 
 ##### Basic Commands #####
@@ -484,4 +489,3 @@ systemctl -t service -> menampilkan semua unit service aktif
 
 
 https://go.btech.id/live-training/os-idsirtii/
-
