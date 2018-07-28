@@ -1,7 +1,7 @@
 body{
 	background-image:url('/assets/img/dot.jpg');
 	background-size:cover;
-	font-family:Sans;
+	font-family: Sans;
 }
 body:before {
     content: "";
@@ -26,6 +26,12 @@ body:before {
 	text-align:center;
 	color: #fff;
     width: 100%;
+}
+@media (max-width: 768px) {
+body{
+	background-size: 246%;
+	background-position: top center;
+}
 }
 h1,h2{
 	font-weight:100;
