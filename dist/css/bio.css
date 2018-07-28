@@ -46,3 +46,7 @@ a{
 }
 a:hover{text-decoration:none;}
 .fa{margin:0 10px;}
+
+.big-font {
+	font-size:25pt;
+}
